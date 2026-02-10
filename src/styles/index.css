@@ -1,0 +1,9 @@
+/*
+ * PulseSync UI — Main style entry point.
+ * Import this once at the root of your application:
+ *
+ *   import '@pulsesync/ui/styles'
+ */
+
+@import './tokens.css';
+@import './reboot.css';

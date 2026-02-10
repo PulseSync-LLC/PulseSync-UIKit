@@ -1,0 +1,112 @@
+/* Toggle — same design as Select, shows включено/выключено instead of selection */
+
+.container {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 16px;
+    width: 100%;
+    background: var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a));
+    border-radius: 8px;
+    outline: transparent solid 2px;
+    transition: all 0.2s cubic-bezier(0.45, 0.65, 0.395, 1);
+    user-select: none;
+
+    &:focus-visible {
+        outline-color: var(--ps-border-hover, var(--border-hover, #404040));
+    }
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.labelRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.label {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 140%;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.descDot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 50%;
+    background: var(--ps-surface-elevated, var(--surface-elevated, #222222));
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    cursor: help;
+    flex-shrink: 0;
+}
+
+.resetBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--ps-accent-muted, var(--accent-muted, #6d8cff));
+    transition: color 0.15s ease;
+    white-space: nowrap;
+    &:hover { color: var(--ps-text-primary, var(--text-primary, #ffffff)); }
+}
+
+.valueLine {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    pointer-events: none;
+}
+
+.value {
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+    transition: color 0.2s ease;
+}
+
+.valueInactive {
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+}
+
+.indicator {
+    display: flex;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+}
+
+.indicatorActive {
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+}
+
+/* Error */
+.error {
+    outline-color: var(--ps-warning, var(--warning, #ffaa44));
+}
+
+.errorText {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ps-warning, var(--warning, #ffaa44));
+    padding-top: 4px;
+}

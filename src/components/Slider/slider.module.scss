@@ -1,0 +1,221 @@
+/* ═══════════════════════════════════════════════
+ *  Slider — "Inline Fill Bar" design
+ *  A single solid bar with fill, value inside
+ * ═══════════════════════════════════════════════ */
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ── Label row above the bar ── */
+
+.labelRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.label {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.resetBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--ps-accent-muted, var(--accent-muted, #6d8cff));
+    transition: color 0.15s ease;
+    white-space: nowrap;
+
+    &:hover {
+        color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    }
+}
+
+.descDot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 50%;
+    background: var(--ps-border, var(--border, #2a2a2a));
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    cursor: help;
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════
+ *  The bar — the main interactive
+ * ═══════════════════════════════ */
+
+.bar {
+    position: relative;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    overflow: hidden;
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+
+    &:hover {
+        border-color: var(--ps-border-hover, var(--border-hover, #404040));
+    }
+
+    &:focus-visible {
+        border-color: var(--ps-accent-muted, var(--accent-muted, #6d8cff));
+        box-shadow: 0 0 0 2px rgba(109, 76, 243, 0.15);
+    }
+}
+
+.barActive {
+    border-color: var(--ps-accent-muted, var(--accent-muted, #6d8cff));
+}
+
+/* ── Fill bar ── */
+
+.fill {
+    position: absolute;
+    inset: 0;
+    right: auto;
+    background: var(--ps-accent, var(--accent, #ffffff));
+    opacity: 0.12;
+    transition: opacity 0.15s ease;
+    border-radius: 11px 0 0 11px;
+    pointer-events: none;
+
+    .bar:hover & {
+        opacity: 0.18;
+    }
+
+    .barActive & {
+        opacity: 0.22;
+    }
+}
+
+/* ── Edge indicator (thin line at fill edge) ── */
+
+.edge {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--ps-accent, var(--accent, #ffffff));
+    opacity: 0.5;
+    transform: translateX(-50%);
+    pointer-events: none;
+    transition: opacity 0.15s ease, width 0.1s ease;
+
+    .bar:hover & {
+        opacity: 0.7;
+    }
+}
+
+.edgeActive {
+    opacity: 0.9 !important;
+    width: 4px;
+}
+
+/* ── Content layer (text above the fill) ── */
+
+.content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ── Min / Max labels ── */
+
+.minLabel,
+.maxLabel {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+    text-shadow:
+        0 0 4px var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a)),
+        0 0 8px var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a));
+    z-index: 2;
+    position: relative;
+}
+
+/* ── Center value ── */
+
+.valueCenter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+}
+
+.valueBtn {
+    background: none;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 8px;
+    cursor: text;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    letter-spacing: 0.02em;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.06);
+    }
+}
+
+.unit {
+    margin-left: 2px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+}
+
+.valueInput {
+    width: 64px;
+    padding: 4px 8px;
+    background: var(--ps-surface-secondary, var(--surface-secondary, #111111));
+    border: 1px solid var(--ps-accent, var(--accent, #ffffff));
+    border-radius: 8px;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+}

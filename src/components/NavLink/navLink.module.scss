@@ -1,0 +1,48 @@
+.navLink {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ps-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: var(--ps-text-primary);
+        border-radius: 1px;
+        transition: width 0.2s ease;
+    }
+
+    &:hover {
+        color: var(--ps-text-secondary);
+    }
+
+    &.active {
+        color: var(--ps-text-primary);
+
+        &::after {
+            width: calc(100% - 24px);
+        }
+    }
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.label {
+    white-space: nowrap;
+}

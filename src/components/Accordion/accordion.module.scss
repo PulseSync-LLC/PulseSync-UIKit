@@ -1,0 +1,141 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ── Section ── */
+.section {
+    border-radius: 12px;
+}
+
+.sectionDisabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* ── Header — clickable bar with background ── */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    font-family: inherit;
+    user-select: none;
+    transition: background 0.15s ease, border-color 0.2s ease, border-radius 0.25s ease;
+
+    &:hover {
+        border-color: var(--ps-border-hover, var(--border-hover, #404040));
+    }
+
+    .sectionOpen & {
+        border-color: var(--ps-border-hover, var(--border-hover, #404040));
+    }
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: var(--ps-surface-secondary, var(--surface-secondary, #111111));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+    .sectionOpen & {
+        background: var(--ps-accent, var(--accent, #ffffff));
+        color: var(--ps-surface-primary, var(--surface-primary, #0a0a0a));
+        border-color: transparent;
+    }
+}
+
+.title {
+    flex: 1;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.chevron {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s ease;
+}
+
+.chevronOpen {
+    transform: rotate(180deg);
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+}
+
+/* ── Body content wrapper (allows pointer events to reach form controls) ── */
+.bodyContent {
+    pointer-events: auto;
+}
+
+/* ── Divider ── */
+.divider {
+    height: 1px;
+    margin: 0 18px;
+    background: var(--ps-border, var(--border, #2a2a2a));
+    opacity: 0.6;
+}
+
+/* ── Body — animated height; ensure content stays interactive ── */
+.body {
+    overflow: hidden;
+    transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+}
+
+.bodyOpening .bodyInner {
+    animation: fadeSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.bodyClosing .bodyInner {
+    animation: fadeSlideOut 0.2s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+}
+
+.bodyInner {
+    padding: 16px 18px 18px;
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+}

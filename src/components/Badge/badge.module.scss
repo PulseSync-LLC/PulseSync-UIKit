@@ -1,0 +1,63 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    border-radius: 6px;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+/* Sizes */
+.size-sm {
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+.size-md {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* Variants */
+.variant-success {
+    background: rgba(68, 255, 136, 0.1);
+    color: var(--ps-success, #44ff88);
+}
+
+.variant-danger {
+    background: rgba(255, 68, 68, 0.1);
+    color: var(--ps-danger, #ff4444);
+}
+
+.variant-warning {
+    background: rgba(255, 200, 68, 0.1);
+    color: var(--ps-warning, #ffc844);
+}
+
+.variant-info {
+    background: rgba(68, 170, 255, 0.1);
+    color: var(--ps-info, #44aaff);
+}
+
+.variant-neutral {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--ps-text-muted, #5a6078);
+}
+
+/* Icon */
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+        width: 14px;
+        height: 14px;
+    }
+}

@@ -1,0 +1,374 @@
+.wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.trigger {
+    cursor: pointer;
+}
+
+/* ── Main menu panel ── */
+
+.menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 2000;
+    min-width: 220px;
+    padding: 6px 0;
+    background: var(--ps-surface-primary, var(--surface-primary, #0d0d0d));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: var(--ps-radius-md, 10px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+    transform-origin: top left;
+    animation: menuOpen 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.menuRight {
+    left: auto;
+    right: 0;
+    transform-origin: top right;
+}
+
+/* Only clip overflow for drill mode (content swaps in-place) */
+.menuDrill {
+    overflow: hidden;
+}
+
+.menuClosing {
+    animation: menuClose 0.1s cubic-bezier(0.4, 0, 1, 1) forwards;
+    pointer-events: none;
+}
+
+@keyframes menuOpen {
+    from { opacity: 0; transform: translateY(-4px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes menuClose {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(-4px) scale(0.97); }
+}
+
+/* ── Menu item ── */
+
+.item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+    cursor: pointer;
+    transition: background 0.01s ease;
+    user-select: none;
+
+    &:hover {
+        background: var(--ps-hover, var(--hover, rgba(255, 255, 255, 0.06)));
+    }
+}
+
+/* Parent with open submenu — stronger highlight */
+.itemActive {
+    background: var(--ps-surface-secondary, var(--surface-secondary, rgba(255, 255, 255, 0.1)));
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--ps-accent, var(--accent, #6D4CF3));
+        border-radius: 0 2px 2px 0;
+    }
+}
+
+/* Active bar on the right side for left-opening items */
+.itemReverse.itemActive {
+    &::after {
+        left: auto;
+        right: 0;
+        border-radius: 2px 0 0 2px;
+    }
+}
+
+.itemDisabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.itemIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+
+    svg { width: 18px; height: 18px; }
+}
+
+.itemLabel {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.itemChevron {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    transition: color 0.15s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+    svg { width: 14px; height: 14px; }
+}
+
+.itemChevronLeft {
+    /* Chevron sits before the label — placement controlled by render order */
+}
+
+.itemChevronOpen {
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    transform: rotate(180deg);
+}
+
+.itemChevronLeft.itemChevronOpen {
+    transform: rotate(-180deg);
+}
+
+/* ── Toggle (mini checkbox) ── */
+
+.toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--ps-text-muted, var(--text-muted, #555555));
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.toggleDot {
+    width: 0;
+    height: 0;
+    background: var(--ps-text-primary, var(--text-primary, #ffffff));
+    border-radius: 2px;
+    transition: all 0.15s ease;
+}
+
+.toggleChecked {
+    border-color: var(--ps-text-primary, var(--text-primary, #ffffff));
+
+    .toggleDot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* ── Radio (circular selector) ── */
+
+.radio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--ps-text-muted, var(--text-muted, #555555));
+    border-radius: 50%;
+    transition: all 0.15s ease;
+}
+
+.radioDot {
+    width: 0;
+    height: 0;
+    background: var(--ps-accent, var(--accent, #6D4CF3));
+    border-radius: 50%;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.radioChecked {
+    border-color: var(--ps-accent, var(--accent, #6D4CF3));
+
+    .radioDot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* ── Divider ── */
+
+.divider {
+    height: 1px;
+    margin: 4px 12px;
+    background: var(--ps-border, var(--border, #2a2a2a));
+}
+
+/* ══════════════════════════════════════
+ *  Submenu (hover mode) — opens RIGHT
+ * ══════════════════════════════════════ */
+
+.submenu {
+    position: absolute;
+    left: calc(100% + 4px);
+    top: -6px;
+    z-index: 2001;
+    min-width: 200px;
+    padding: 6px 0;
+    background: var(--ps-surface-primary, var(--surface-primary, #0d0d0d));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: var(--ps-radius-md, 10px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+    transform-origin: left top;
+    animation: subOpenRight 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    /* Bridge between parent item and submenu */
+    &::before {
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 0;
+        width: 10px;
+        height: 100%;
+        background: transparent;
+    }
+}
+
+.submenuClosing {
+    animation: subCloseRight 0.08s cubic-bezier(0.4, 0, 1, 1) forwards;
+    pointer-events: none;
+}
+
+/* ── Submenu opens LEFT (for right-aligned menus) ── */
+
+.submenuLeft {
+    left: auto;
+    right: calc(100% + 4px);
+    transform-origin: right top;
+    animation: subOpenLeft 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    /* Bridge on the right side */
+    &::before {
+        left: 100%;
+        right: auto;
+    }
+}
+
+.submenuClosingLeft {
+    animation: subCloseLeft 0.08s cubic-bezier(0.4, 0, 1, 1) forwards;
+    pointer-events: none;
+}
+
+/* Submenu animations — RIGHT direction */
+@keyframes subOpenRight {
+    from { opacity: 0; transform: translateX(-6px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes subCloseRight {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(-6px); }
+}
+
+/* Submenu animations — LEFT direction */
+@keyframes subOpenLeft {
+    from { opacity: 0; transform: translateX(6px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes subCloseLeft {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(6px); }
+}
+
+/* ── Drill-mode chevron (arrow enter) ── */
+
+.drillChevron {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    transition: color 0.1s ease, transform 0.15s ease;
+
+    svg { width: 14px; height: 14px; }
+}
+
+.item:hover .drillChevron {
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    transform: translateX(2px);
+}
+
+/* ══════════════════════════════════════
+ *  Drill-down mode
+ * ══════════════════════════════════════ */
+
+.drillContent {
+    /* Container for the animated content swap */
+}
+
+.drillSlideIn {
+    animation: drillIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.drillSlideOut {
+    animation: drillOut 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes drillIn {
+    from { opacity: 0; transform: translateX(16px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes drillOut {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Back-navigation row */
+.drillBack {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    margin-bottom: 2px;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 140%;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.1s ease, background 0.1s ease;
+    border-bottom: 1px solid var(--ps-border, var(--border, #2a2a2a));
+
+    &:hover {
+        color: var(--ps-text-primary, var(--text-primary, #ffffff));
+        background: var(--ps-hover, var(--hover, rgba(255, 255, 255, 0.06)));
+    }
+}
+
+.drillBackIcon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    svg { width: 14px; height: 14px; }
+}
+
+.drillBackLabel {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

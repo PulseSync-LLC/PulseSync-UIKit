@@ -1,0 +1,201 @@
+.container {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 16px;
+    width: 100%;
+    background: var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a));
+    border-radius: 8px;
+    outline: transparent solid 2px;
+    transition: all 0.2s cubic-bezier(0.45, 0.65, 0.395, 1);
+    user-select: none;
+
+    &:focus-visible {
+        outline-color: var(--ps-border-hover, var(--border-hover, #404040));
+    }
+}
+
+.open {
+    outline-color: var(--ps-border-hover, var(--border-hover, #404040));
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.labelRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.label {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 140%;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.resetBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--ps-accent-muted, var(--accent-muted, #6d8cff));
+    transition: color 0.15s ease;
+    white-space: nowrap;
+    &:hover { color: var(--ps-text-primary, var(--text-primary, #ffffff)); }
+}
+
+.descDot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 50%;
+    background: var(--ps-surface-elevated, var(--surface-elevated, #222222));
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    cursor: help;
+    flex-shrink: 0;
+}
+
+.valueLine {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    pointer-events: none;
+}
+
+.value {
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+    transition: color 0.2s ease;
+}
+
+.placeholder {
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+}
+
+.arrow {
+    display: flex;
+    transition: transform 0.2s ease, color 0.2s ease;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+}
+
+.arrowOpen {
+    transform: rotate(180deg);
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+}
+
+/* ── Dropdown panel (rendered in portal to body; position via inline style) ── */
+.panel {
+    padding: 6px;
+    background: var(--ps-surface-primary, var(--surface-primary, #0d0d0d));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: var(--ps-radius-md, 10px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    max-height: 320px;
+    overflow-y: auto;
+    transform-origin: top center;
+    animation: panelOpen 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.panelClosing {
+    animation: panelClose 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+}
+
+@keyframes panelOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes panelClose {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.96);
+    }
+}
+
+.list {
+    display: grid;
+    gap: 2px;
+    max-height: 280px;
+    overflow: auto;
+}
+
+/* ── Options — matches OptionPicker .option ── */
+.option {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: transparent;
+    border: none;
+    border-radius: var(--ps-radius-sm, 6px);
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: background 0.15s ease;
+
+    &:hover,
+    &.hover {
+        background: var(--ps-hover, var(--hover, rgba(255, 255, 255, 0.05)));
+    }
+}
+
+.optionLabel {
+    flex: 1;
+    min-width: 0;
+    pointer-events: none;
+}
+
+.check {
+    display: flex;
+    flex-shrink: 0;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+}
+
+.active {
+    background: var(--ps-surface-secondary, var(--surface-secondary, #111111));
+}
+
+/* ── Error ── */
+.error {
+    outline-color: var(--ps-warning, var(--warning, #ffaa44));
+}
+
+.errorText {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ps-warning, var(--warning, #ffaa44));
+    padding-top: 4px;
+}

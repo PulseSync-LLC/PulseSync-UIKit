@@ -1,0 +1,129 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    height: 150px;
+    padding: 2px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: #0a0a0a;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    animation: fadeInUp 0.2s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.topSection {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 10px;
+    gap: 10px;
+    flex: 1;
+    border-radius: 9px;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: cover !important;
+}
+
+.userAvatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 9px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+    height: 60px;
+    min-width: 0;
+}
+
+.badges {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+    height: 18px;
+}
+
+.badge {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badgeIcon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badgeDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.nickname {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 110%;
+    color: #ffffff;
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.bottomSection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3px 10px;
+    gap: 10px;
+    height: 26px;
+}
+
+.statusText {
+    font-weight: 800;
+    font-size: 12px;
+    line-height: 110%;
+    color: var(--ps-user-status-color, #66e3ff);
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.statusIcon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--ps-user-status-color, #66e3ff);
+}

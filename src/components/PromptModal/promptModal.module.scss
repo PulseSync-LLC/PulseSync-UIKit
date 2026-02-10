@@ -1,0 +1,110 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal {
+    background: var(--ps-surface-primary);
+    border: 1px solid var(--ps-border);
+    border-radius: var(--ps-radius-xl);
+    padding: 24px;
+    max-width: 420px;
+    width: 100%;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ps-text-primary);
+    margin: 0 0 12px;
+}
+
+.text {
+    font-size: 14px;
+    color: var(--ps-text-secondary);
+    margin: 0 0 16px;
+    white-space: pre-line;
+}
+
+.input {
+    width: 100%;
+    background: var(--ps-surface-tertiary);
+    border: 2px solid var(--ps-border);
+    border-radius: var(--ps-radius-md);
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--ps-text-primary);
+    outline: none;
+    margin-bottom: 18px;
+    font-family: var(--ps-font-family);
+
+    &:focus {
+        border-color: var(--ps-text-primary);
+    }
+
+    &::placeholder {
+        color: var(--ps-text-muted);
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.cancelButton {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--ps-surface-tertiary);
+    color: var(--ps-text-primary);
+    border: none;
+    border-radius: var(--ps-radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: var(--ps-surface-elevated);
+    }
+}
+
+.confirmButton {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--ps-text-primary);
+    color: var(--ps-background);
+    border: none;
+    border-radius: var(--ps-radius-sm);
+    cursor: pointer;
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+
+    &:hover {
+        opacity: 0.9;
+        transform: scale(0.98);
+    }
+}
+
+.dangerButton {
+    background: var(--ps-danger);
+}
+
+.confirmButton:disabled,
+.cancelButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}

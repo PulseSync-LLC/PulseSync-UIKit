@@ -1,0 +1,157 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.labelRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.resetBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--ps-accent-muted, var(--accent-muted, #6d8cff));
+    transition: color 0.15s ease;
+    white-space: nowrap;
+    &:hover { color: var(--ps-text-primary, var(--text-primary, #ffffff)); }
+}
+
+/*
+ * The <input> itself — mirrors the website's .fieldInput exactly.
+ * Container wrapper only used when icons are present.
+ */
+.input {
+    background: var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a));
+    border: 2px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 15px;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    width: 100%;
+
+    &:focus {
+        border-color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    }
+
+    &::placeholder {
+        color: var(--ps-text-muted, var(--text-muted, #666666));
+    }
+
+    &:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+}
+
+/* ── Size variants ── */
+.size-sm .input {
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+.size-md .input {
+    padding: 12px 16px;
+    font-size: 15px;
+}
+
+.size-lg .input {
+    padding: 14px 18px;
+    font-size: 16px;
+}
+
+/* ── Error state ── */
+.hasError .input {
+    border-color: var(--ps-danger, var(--danger, #ff4444));
+
+    &:focus {
+        border-color: var(--ps-danger, var(--danger, #ff4444));
+    }
+}
+
+/* ── Container with icons ── */
+.inputContainer {
+    display: flex;
+    align-items: center;
+}
+
+.hasIcons .input {
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    flex: 1;
+    min-width: 0;
+}
+
+.hasIcons {
+    background: var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a));
+    border: 2px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 10px;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+        border-color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    }
+}
+
+.hasIcons.hasError {
+    border-color: var(--ps-danger, var(--danger, #ff4444));
+}
+
+.iconLeft {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    flex-shrink: 0;
+    padding-left: 14px;
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.iconRight {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    flex-shrink: 0;
+    padding-right: 14px;
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ── Hint / Error text ── */
+.hint {
+    font-size: 12px;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+}
+
+.hintError {
+    color: var(--ps-danger, var(--danger, #ff4444));
+}

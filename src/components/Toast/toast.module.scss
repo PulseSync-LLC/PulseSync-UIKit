@@ -1,0 +1,130 @@
+/* ── Toast container (portal) ── */
+.container {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+    max-width: 420px;
+    width: 100%;
+}
+
+/* ── Single toast ── */
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #040404;
+    border: 1px solid #696969;
+    box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.25);
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateX(120%);
+    transition: all 0.5s cubic-bezier(0.11, 1.86, 0.27, 0.93);
+}
+
+.toastVisible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toastExiting {
+    opacity: 0;
+    transform: translateX(120%);
+    transition: all 0.4s ease-in;
+}
+
+/* ── Icon ── */
+.iconContainer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.iconContainer svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ── Text ── */
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2px 8px;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+}
+
+.title {
+    font-weight: 900;
+    font-size: 15px;
+    color: var(--toast-color, #87ff77);
+}
+
+.message {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--toast-color, #87ff77);
+    opacity: 0.85;
+}
+
+/* ── Dismiss ── */
+.dismissButton {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    padding: 6px;
+    margin: 0 4px;
+    border: none;
+    border-radius: 4px;
+    color: #999;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+
+    &:hover {
+        background: #363944;
+    }
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ── Progress bar ── */
+.progressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--toast-color, #87ff77);
+    border-radius: 0 0 8px 8px;
+    opacity: 0.5;
+    transition: width linear;
+}
+
+.toast {
+    position: relative;
+    overflow: hidden;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+    .container {
+        right: 8px;
+        left: 8px;
+        max-width: none;
+    }
+}

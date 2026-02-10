@@ -1,0 +1,51 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    padding: 20px;
+}
+
+.modal {
+    background: var(--ps-surface-primary);
+    border: 1px solid var(--ps-border);
+    border-radius: var(--ps-radius-xl);
+    padding: 24px;
+    max-width: 420px;
+    width: 100%;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ps-text-primary);
+    margin: 0 0 12px;
+}
+
+.text {
+    font-size: 14px;
+    color: var(--ps-text-secondary);
+    margin: 0 0 20px;
+    white-space: pre-line;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.dangerButton {
+    background: var(--ps-danger) !important;
+    color: #fff !important;
+    outline-color: transparent !important;
+
+    &:hover {
+        background: var(--ps-danger) !important;
+        opacity: 0.9;
+    }
+}

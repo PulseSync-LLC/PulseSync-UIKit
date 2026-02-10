@@ -1,0 +1,30 @@
+.skeleton {
+    background: var(--ps-surface-tertiary, #252834);
+    position: relative;
+    overflow: hidden;
+}
+
+.animated {
+    background: linear-gradient(
+        90deg,
+        var(--ps-surface-tertiary, #252834) 25%,
+        var(--ps-surface-elevated, #2e3142) 50%,
+        var(--ps-surface-tertiary, #252834) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+}
