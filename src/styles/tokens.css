@@ -4,9 +4,9 @@
  *
  * Usage:
  *   - Import this file once at the root of your app:
- *       import '@pulsesync/ui/styles'
+ *       import '@maks1mio/pulsesync-uikit/styles'
  *   - Or import directly:
- *       import '@pulsesync/ui/dist/styles.css'
+ *       import '@maks1mio/pulsesync-uikit/dist/styles.css'
  *   - Theme is controlled via `data-theme` attribute on <html> or <body>.
  *     Default (no attribute) = dark theme.
  */

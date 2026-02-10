@@ -5,7 +5,7 @@
 ## Установка
 
 ```bash
-npm install @maks1mio/PulseSync-UIKit
+npm install @maks1mio/pulsesync-uikit
 ```
 
 **Peer-зависимости:** `react`, `react-dom`, `framer-motion` (опционально).
@@ -13,8 +13,8 @@ npm install @maks1mio/PulseSync-UIKit
 ## Использование
 
 ```tsx
-import { Button, Input, PulseSyncUIProvider } from '@maks1mio/PulseSync-UIKit'
-import '@maks1mio/PulseSync-UIKit/styles'
+import { Button, Input, PulseSyncUIProvider } from '@maks1mio/pulsesync-uikit'
+import '@maks1mio/pulsesync-uikit/styles'
 
 function App() {
   return (

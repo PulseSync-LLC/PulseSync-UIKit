@@ -36,7 +36,7 @@ export interface PulseSyncUIProviderProps extends PulseSyncUIContextValue {
  * ```tsx
  * import Link from 'next/link'
  * import { usePathname } from 'next/navigation'
- * import { PulseSyncUIProvider } from '@pulsesync/ui'
+ * import { PulseSyncUIProvider } from '@maks1mio/pulsesync-uikit'
  *
  * <PulseSyncUIProvider LinkComponent={Link} usePathname={usePathname}>
  *   <App />
@@ -46,7 +46,7 @@ export interface PulseSyncUIProviderProps extends PulseSyncUIContextValue {
  * @example React Router
  * ```tsx
  * import { Link, useLocation } from 'react-router-dom'
- * import { PulseSyncUIProvider } from '@pulsesync/ui'
+ * import { PulseSyncUIProvider } from '@maks1mio/pulsesync-uikit'
  *
  * const usePathname = () => useLocation().pathname
  *

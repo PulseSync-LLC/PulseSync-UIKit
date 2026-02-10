@@ -1,4 +1,4 @@
-/* ── Styles (consumers should import '@pulsesync/ui/styles' separately) ── */
+/* ── Styles (consumers should import '@maks1mio/pulsesync-uikit/styles' separately) ── */
 import './styles/index.css'
 
 /* ── Context / Provider ── */

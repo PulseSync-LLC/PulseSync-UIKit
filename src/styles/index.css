@@ -2,7 +2,7 @@
  * PulseSync UI — Main style entry point.
  * Import this once at the root of your application:
  *
- *   import '@pulsesync/ui/styles'
+ *   import '@maks1mio/pulsesync-uikit/styles'
  */
 
 @import './tokens.css';
