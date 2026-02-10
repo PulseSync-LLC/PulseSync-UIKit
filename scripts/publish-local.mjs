@@ -1,22 +1,28 @@
-import { readFileSync, existsSync } from 'fs'
+import { readFileSync, existsSync, writeFileSync, unlinkSync } from 'fs'
 import { spawnSync } from 'child_process'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = resolve(__dirname, '..')
-const envPath = resolve(root, '.env')
+const envPaths = [
+  resolve(root, '.env'),
+  resolve(process.cwd(), '.env'),
+]
 
 function loadEnv() {
-  if (!existsSync(envPath)) return
-  const content = readFileSync(envPath, 'utf8')
-  for (const line of content.split('\n')) {
-    const match = line.match(/^\s*([^#=]+)=(.*)$/)
-    if (match) {
-      const key = match[1].trim()
-      const value = match[2].trim().replace(/^["']|["']$/g, '')
-      process.env[key] = value
+  for (const envPath of envPaths) {
+    if (!existsSync(envPath)) continue
+    const content = readFileSync(envPath, 'utf8').replace(/\r\n/g, '\n')
+    for (const line of content.split('\n')) {
+      const match = line.match(/^\s*([^#=]+)=(.*)$/)
+      if (match) {
+        const key = match[1].trim().replace(/^\uFEFF/, '')
+        const value = match[2].trim().replace(/^["']|["']$/g, '')
+        if (key && value) process.env[key] = value
+      }
     }
+    break
   }
 }
 
@@ -24,10 +30,15 @@ loadEnv()
 
 const token = process.env.NPM_TOKEN || process.env.NODE_AUTH_TOKEN
 if (!token) {
+  const found = envPaths.find(p => existsSync(p))
   console.error('❌ NPM_TOKEN or NODE_AUTH_TOKEN required.')
-  console.error('   Create .env with NPM_TOKEN=your_token or run:')
-  console.error('   $env:NPM_TOKEN="xxx"; npm run release:local  (PowerShell)')
-  console.error('   NPM_TOKEN=xxx npm run release:local          (Bash)')
+  if (found) {
+    console.error(`   .env found at ${found} but NPM_TOKEN is empty or missing.`)
+    console.error('   Add line: NPM_TOKEN=npm_xxxxxxxx')
+  } else {
+    console.error('   Create .env with: NPM_TOKEN=your_token')
+    console.error(`   Or run: $env:NPM_TOKEN="xxx"; npm run release:local  (PowerShell)`)
+  }
   process.exit(1)
 }
 
@@ -48,10 +59,21 @@ let r = spawnSync('npm', ['run', 'build'], { cwd: root, stdio: 'inherit', shell:
 if (r.status !== 0) process.exit(1)
 
 console.log('📤 Publishing to npm...')
-r = spawnSync('npm', ['publish', '--access', 'public'], {
-  cwd: root,
-  stdio: 'inherit',
-  shell: true,
-  env: { ...process.env, NODE_AUTH_TOKEN: token },
-})
+const npmrcPath = resolve(root, '.npmrc')
+const hadNpmrc = existsSync(npmrcPath)
+const originalNpmrc = hadNpmrc ? readFileSync(npmrcPath, 'utf8') : ''
+try {
+  writeFileSync(npmrcPath, `//registry.npmjs.org/:_authToken=${token}\n${originalNpmrc}`.trimEnd())
+  r = spawnSync('npm', ['publish', '--access', 'public'], {
+    cwd: root,
+    stdio: 'inherit',
+    shell: true,
+  })
+} finally {
+  if (hadNpmrc) {
+    writeFileSync(npmrcPath, originalNpmrc)
+  } else {
+    try { unlinkSync(npmrcPath) } catch (_) {}
+  }
+}
 process.exit(r.status || 0)

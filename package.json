@@ -1,5 +1,5 @@
 {
-    "name": "@pulsesync/ui",
+    "name": "@maks1mio/PulseSync-UIKit",
     "version": "1.0.0",
     "description": "PulseSync UI Kit — shared component library for PulseSync apps",
     "type": "module",
