@@ -56,11 +56,14 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/YOUR_USERNAME/PulseSync-UIKit.git"
+        "url": "https://github.com/PulseSync-LLC/PulseSync-UIKit.git"
     },
-    "homepage": "https://github.com/YOUR_USERNAME/PulseSync-UIKit#readme",
+    "homepage": "https://github.com/PulseSync-LLC/PulseSync-UIKit#readme",
     "bugs": {
-        "url": "https://github.com/YOUR_USERNAME/PulseSync-UIKit/issues"
+        "url": "https://github.com/PulseSync-LLC/PulseSync-UIKit/issues"
     },
-    "keywords": ["react", "ui", "components", "uikit", "pulsesync", "design-system"]
+    "keywords": ["react", "ui", "components", "uikit", "pulsesync", "design-system"],
+    "publishConfig": {
+        "access": "public"
+    }
 }
