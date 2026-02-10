@@ -24,7 +24,8 @@
     "scripts": {
         "dev": "vite build --watch",
         "build": "tsc --noEmit && vite build",
-        "typecheck": "tsc --noEmit"
+        "typecheck": "tsc --noEmit",
+        "release:local": "node scripts/publish-local.mjs"
     },
     "peerDependencies": {
         "react": ">=18.0.0",
@@ -56,13 +57,20 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/PulseSync-LLC/PulseSync-UIKit.git"
+        "url": "git+https://github.com/PulseSync-LLC/PulseSync-UIKit.git"
     },
     "homepage": "https://github.com/PulseSync-LLC/PulseSync-UIKit#readme",
     "bugs": {
         "url": "https://github.com/PulseSync-LLC/PulseSync-UIKit/issues"
     },
-    "keywords": ["react", "ui", "components", "uikit", "pulsesync", "design-system"],
+    "keywords": [
+        "react",
+        "ui",
+        "components",
+        "uikit",
+        "pulsesync",
+        "design-system"
+    ],
     "publishConfig": {
         "access": "public"
     }
