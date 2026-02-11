@@ -7,6 +7,8 @@
 
 .trigger {
     cursor: pointer;
+    width: 100%;
+    text-align: -webkit-center;
 }
 
 /* Backdrop for modal mode */
@@ -53,6 +55,19 @@
     transform-origin: top right;
 }
 
+.panelUp {
+    transform-origin: bottom left;
+    animation-name: panelOpenUp;
+
+    &.panelRight {
+        transform-origin: bottom right;
+    }
+
+    &.panelClosing {
+        animation-name: panelCloseUp;
+    }
+}
+
 .panelClosing {
     animation: panelClose 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     pointer-events: none;
@@ -85,6 +100,28 @@
     to {
         opacity: 0;
         transform: translateY(-6px) scale(0.97);
+    }
+}
+
+@keyframes panelOpenUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes panelCloseUp {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(6px) scale(0.97);
     }
 }
 

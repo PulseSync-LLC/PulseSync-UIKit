@@ -1,33 +1,89 @@
-/* NavigationBar — vertical icon bar, like client */
+/* NavigationBar — vertical navigation with expandable labels */
 
 .bar {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
     display: flex;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: space-between;
+    gap: 8px;
+    height: 100%;
 }
 
+/* ========== CONTENT CONTAINERS ========== */
+/* Vertical content — shown on desktop */
+.verticalContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 8px;
+}
+
+/* Horizontal content — shown on mobile */
+.horizontalContent {
+    display: none;
+}
+
+/* ========== EXPANDABLE MODE ========== */
+.barExpandable {
+    width: var(--ps-nav-collapsed-width, 52px);
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    will-change: width;
+}
+
+.barExpanded {
+    width: var(--ps-nav-expanded-width, 220px);
+}
+
+/* ========== ITEMS CONTAINER ========== */
 .items {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 2px;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 8px;
 }
 
+/* Horizontal items container */
+.itemsHorizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0;
+    
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* ========== SINGLE NAV ITEM ========== */
 .item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 36px;
+    justify-content: flex-start;
     height: 36px;
-    padding: 0;
+    padding: 0 8px;
+    gap: 12px;
     border: none;
-    border-radius: 50%;
+    border-radius: 8px;
     background: transparent;
     color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.45, 0.65, 0.395, 1);
+    transition: background 0.15s ease, color 0.15s ease;
     text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    flex-shrink: 0;
 
     &:hover:not(:disabled) {
         background: var(--ps-hover, var(--hover, rgba(255, 255, 255, 0.06)));
@@ -35,10 +91,14 @@
     }
 }
 
+/* Icon wrapper — fixed 20x20 */
 .iconWrap {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
 
     svg {
         width: 20px;
@@ -46,26 +106,252 @@
     }
 }
 
+/* Label — hidden when collapsed */
+.labelWrap {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0;
+    max-width: 0;
+    transition: 
+        opacity 0.2s ease,
+        max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, max-width;
+}
+
+.barExpanded .labelWrap {
+    opacity: 1;
+    max-width: 160px;
+}
+
+/* Active state */
 .itemActive {
-    background: var(--ps-nav-active, #5865f2);
+    background: var(--item-active-color, var(--ps-nav-active, #5865f2));
     color: var(--ps-text-primary, var(--text-primary, #ffffff));
 
-    &:hover {
-        background: var(--ps-nav-active, #5865f2);
+    &:hover:not(:disabled) {
+        background: var(--item-active-color, var(--ps-nav-active, #5865f2));
         filter: brightness(1.1);
     }
 }
 
+/* Disabled state */
 .itemDisabled {
     opacity: 0.4;
-    cursor: default;
+    cursor: not-allowed;
     color: var(--ps-text-muted, var(--text-muted, #666666));
+
+    &:hover {
+        background: transparent;
+    }
 }
 
+/* ========== SLOTS (top/bottom/left/right content) ========== */
 .slot {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 8px;
-    padding: 8px 0;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 0 8px;
+    min-height: 44px;
+    flex-shrink: 0;
+}
+
+.slotTop {
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+
+.slotBottom {
+    padding-top: 4px;
+    padding-bottom: 8px;
+}
+
+/* Horizontal slots — left/right */
+.slotLeft,
+.slotRight {
+    padding: 0;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+}
+
+/* Raw slot — content rendered directly without slotBox */
+.slotRaw {
+    padding: 0;
+}
+
+/* Clickable slot (link or button) */
+.slotClickable {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+
+    &:hover {
+        background: var(--ps-hover, var(--hover, rgba(255, 255, 255, 0.06)));
+    }
+}
+
+/* Fixed size box for icon/avatar — matches item structure */
+.slotBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    /* Same as item: 8px padding + 20px icon = 36px total width */
+    width: 36px;
+    height: 36px;
+    
+    /* Scale down content if larger */
+    > * {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+/* Expandable label — same animation as item labels */
+.slotLabel {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.3;
+    color: var(--ps-text-primary, var(--text-primary, #fff));
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    max-width: 0;
+    transition: 
+        opacity 0.2s ease,
+        max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, max-width;
+}
+
+.barExpanded .slotLabel {
+    opacity: 1;
+    max-width: 160px;
+}
+
+/* ========== RESPONSIVE MODE (mobile bottom bar) ========== */
+@media (max-width: 768px) {
+    .barResponsive {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: auto;
+        width: 100% !important;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        background: var(--ps-background, var(--background, #0a0a0a));
+        border-top: 1px solid var(--ps-border, var(--border, rgba(255, 255, 255, 0.08)));
+        padding: 6px 8px;
+        padding-bottom: calc(6px + env(safe-area-inset-bottom));
+        z-index: 1000;
+        gap: 0;
+    }
+
+    /* Hide vertical content on mobile */
+    .barResponsive .verticalContent {
+        display: none;
+    }
+
+    /* Show horizontal content on mobile */
+    .barResponsive .horizontalContent {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 4px;
+    }
+
+    /* Horizontal items — center */
+    .barResponsive .itemsHorizontal {
+        flex: 1;
+        justify-content: center;
+    }
+
+    /* Item — compact square */
+    .barResponsive .itemsHorizontal .item {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        padding: 0;
+        gap: 0;
+        border-radius: 10px;
+    }
+
+    /* Hide labels on mobile */
+    .barResponsive .labelWrap {
+        display: none !important;
+    }
+
+    /* Icon size for mobile */
+    .barResponsive .iconWrap {
+        width: 22px;
+        height: 22px;
+
+        svg {
+            width: 22px;
+            height: 22px;
+        }
+    }
+
+    /* Active state — more visible */
+    .barResponsive .itemActive {
+        background: var(--item-active-color, var(--ps-nav-active, #5865f2));
+    }
+
+    /* Don't expand on mobile */
+    .barResponsive.barExpandable {
+        width: 100% !important;
+    }
+
+    /* Left/Right slots — square boxes matching items */
+    .barResponsive .slotLeft,
+    .barResponsive .slotRight {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 10px;
+    }
+
+    /* Slot box on mobile — same size as items */
+    .barResponsive .slotBox {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* Raw slot on mobile */
+    .barResponsive .slotRaw {
+        padding: 0;
+        min-width: 44px;
+        justify-content: center;
+    }
+
+    /* ========== INLINE MODE (no position:fixed, for demos) ========== */
+    .barResponsive.barInline {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        border-top: none;
+        border-radius: 12px;
+        padding-bottom: 6px;
+    }
 }

@@ -37,8 +37,8 @@ export interface UserMenuProps {
     children?: ReactNode
     /** Additional className on wrapper */
     className?: string
-    /** Alignment relative to trigger (dropdown mode) */
-    align?: 'left' | 'right'
+    /** Alignment relative to trigger (dropdown mode). 'auto' detects based on screen position */
+    align?: 'left' | 'right' | 'auto'
     /** Display as centered modal with backdrop */
     modal?: boolean
     /** Callback when nickname is clicked (e.g. for copy) */
@@ -47,6 +47,14 @@ export interface UserMenuProps {
     triggerSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
     /** Trigger avatar className */
     triggerClassName?: string
+    /** Controlled open state */
+    open?: boolean
+    /** Callback when open state changes */
+    onOpenChange?: (open: boolean) => void
+    /** Anchor element for positioning (used when trigger is external) */
+    anchorRef?: React.RefObject<HTMLElement | null>
+    /** Hide the built-in trigger (use with controlled mode and external trigger) */
+    hideTrigger?: boolean
 }
 
 export function UserMenu({
@@ -64,14 +72,60 @@ export function UserMenu({
     onNicknameClick,
     triggerSize = 'sm',
     triggerClassName,
+    open: controlledOpen,
+    onOpenChange,
+    anchorRef,
+    hideTrigger = false,
 }: UserMenuProps) {
-    const [open, setOpen] = useState(false)
+    const [internalOpen, setInternalOpen] = useState(false)
     const [closing, setClosing] = useState(false)
     const [mounted, setMounted] = useState(false)
     const [hasOpened, setHasOpened] = useState(false) // Track if ever opened (for caching)
     const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({})
+    const [computedAlign, setComputedAlign] = useState<'left' | 'right'>('right')
+    const [openDirection, setOpenDirection] = useState<'down' | 'up'>('down')
     const wrapRef = useRef<HTMLDivElement>(null)
     const panelRef = useRef<HTMLDivElement>(null)
+
+    // Support controlled mode
+    const isControlled = controlledOpen !== undefined
+    // Track previous controlled open state for animation
+    const prevControlledOpen = useRef(controlledOpen)
+    // Track if close was initiated internally (via closePanel)
+    const internalCloseRef = useRef(false)
+    
+    // In controlled mode: if controlledOpen changes from true to false, 
+    // we need to animate closing instead of instant hide
+    const [animatingClose, setAnimatingClose] = useState(false)
+    
+    // Determine actual open state considering close animation
+    const open = isControlled 
+        ? (controlledOpen || animatingClose)  // Keep open during close animation
+        : internalOpen
+
+    const setOpen = useCallback((value: boolean) => {
+        if (!isControlled) {
+            setInternalOpen(value)
+        }
+        onOpenChange?.(value)
+    }, [isControlled, onOpenChange])
+
+    // Handle controlled close with animation
+    useEffect(() => {
+        if (isControlled && prevControlledOpen.current === true && controlledOpen === false) {
+            // Controlled open changed from true to false
+            // Only start animation if close was NOT initiated internally
+            if (!internalCloseRef.current) {
+                setAnimatingClose(true)
+                setClosing(true)
+            }
+        }
+        // Reset internal close flag when controlled state changes
+        if (prevControlledOpen.current !== controlledOpen) {
+            internalCloseRef.current = false
+        }
+        prevControlledOpen.current = controlledOpen
+    }, [controlledOpen, isControlled])
 
     useEffect(() => setMounted(true), [])
 
@@ -81,18 +135,47 @@ export function UserMenu({
     }, [open, hasOpened])
 
     const updatePosition = useCallback(() => {
-        const el = wrapRef.current
+        const el = anchorRef?.current ?? wrapRef.current
         if (!el) return
         const rect = el.getBoundingClientRect()
-        setPanelStyle({
+        const panelHeight = 320 // Approximate panel height
+        const panelWidth = 280
+
+        // Determine horizontal alignment
+        let effectiveAlign: 'left' | 'right' = align === 'auto' ? 'right' : align
+        if (align === 'auto') {
+            const triggerCenterX = rect.left + rect.width / 2
+            const screenCenterX = window.innerWidth / 2
+            effectiveAlign = triggerCenterX < screenCenterX ? 'left' : 'right'
+        }
+        setComputedAlign(effectiveAlign)
+
+        // Determine vertical direction
+        const spaceBelow = window.innerHeight - rect.bottom
+        const spaceAbove = rect.top
+        const direction: 'down' | 'up' = spaceBelow < panelHeight && spaceAbove > spaceBelow ? 'up' : 'down'
+        setOpenDirection(direction)
+
+        const style: React.CSSProperties = {
             position: 'fixed',
-            top: rect.bottom + 6,
-            left: align === 'right' ? undefined : rect.left,
-            right: align === 'right' ? window.innerWidth - rect.right : undefined,
-            minWidth: 280,
+            minWidth: panelWidth,
             zIndex: 10050,
-        })
-    }, [align])
+        }
+
+        if (direction === 'down') {
+            style.top = rect.bottom + 6
+        } else {
+            style.bottom = window.innerHeight - rect.top + 6
+        }
+
+        if (effectiveAlign === 'left') {
+            style.left = rect.left
+        } else {
+            style.right = window.innerWidth - rect.right
+        }
+
+        setPanelStyle(style)
+    }, [align, anchorRef])
 
     useEffect(() => {
         if (!open) return
@@ -108,6 +191,9 @@ export function UserMenu({
     const closePanel = useCallback(() => {
         if (!open && !closing) return
         if (closing) return
+        // Mark as internal close to prevent double animation
+        internalCloseRef.current = true
+        setAnimatingClose(true)
         setClosing(true)
     }, [open, closing])
 
@@ -115,19 +201,23 @@ export function UserMenu({
         if (modal) return // Modal handles clicks via backdrop
         const handler = (e: MouseEvent) => {
             const target = e.target as Node
-            if (wrapRef.current?.contains(target) || panelRef.current?.contains(target)) return
+            const anchor = anchorRef?.current ?? wrapRef.current
+            if (anchor?.contains(target) || panelRef.current?.contains(target)) return
             closePanel()
         }
         document.addEventListener('mousedown', handler)
         return () => document.removeEventListener('mousedown', handler)
-    }, [closePanel, modal])
+    }, [closePanel, modal, anchorRef])
 
     const handleAnimEnd = useCallback(() => {
         if (closing) {
             setClosing(false)
+            setAnimatingClose(false)
+            // Always notify parent about close (for controlled mode)
+            // In uncontrolled mode this also updates internal state
             setOpen(false)
         }
-    }, [closing])
+    }, [closing, setOpen])
 
     const toggle = () => {
         if (open) closePanel()
@@ -142,7 +232,8 @@ export function UserMenu({
             ref={panelRef}
             className={clsx(
                 styles.panel,
-                align === 'right' && styles.panelRight,
+                computedAlign === 'right' && styles.panelRight,
+                openDirection === 'up' && styles.panelUp,
                 closing && styles.panelClosing,
                 isHidden && styles.panelHidden
             )}
@@ -204,6 +295,26 @@ export function UserMenu({
             </div>
         </div>
     )
+
+    // If hideTrigger, render only portal when needed
+    if (hideTrigger) {
+        // Only render portal when mounted and (open, closing, or has been opened for caching)
+        const shouldRenderPortal = mounted && (open || closing || hasOpened)
+        if (!shouldRenderPortal) return null
+        
+        return createPortal(
+            modal ? (
+                <div
+                    className={clsx(styles.backdrop, closing && styles.backdropClosing, isHidden && styles.backdropHidden)}
+                    onClick={closePanel}
+                    onAnimationEnd={handleAnimEnd}
+                >
+                    {panelContent}
+                </div>
+            ) : panelContent,
+            document.body,
+        )
+    }
 
     return (
         <div ref={wrapRef} className={clsx(styles.wrapper, className)}>

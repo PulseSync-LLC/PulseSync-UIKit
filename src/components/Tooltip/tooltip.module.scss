@@ -43,6 +43,7 @@
     height: fit-content;
     width: fit-content;
     max-width: 200px;
+    text-wrap: auto;
 
     &.top {
         transform: translate(-50%, -100%) scale(0.92);
