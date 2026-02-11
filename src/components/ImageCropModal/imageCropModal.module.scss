@@ -1,0 +1,185 @@
+/* Image Crop Modal Styles */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+}
+
+.modal {
+    background: var(--surface-primary);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.closeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--surface-secondary);
+    border: none;
+    border-radius: 10px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: var(--surface-tertiary);
+        color: var(--text-primary);
+    }
+}
+
+.cropContainer {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    background: var(--background);
+}
+
+.cropperContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.cropperMedia {
+    max-height: 100%;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--surface-secondary);
+}
+
+.zoomControl {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.zoomLabel {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    min-width: 60px;
+}
+
+.zoomSlider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--surface-tertiary);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        background: var(--text-primary);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    &::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        background: var(--text-primary);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+}
+
+.infoRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+}
+
+.sizeHint {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .modal {
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    .cropContainer {
+        height: 280px;
+    }
+
+    .header,
+    .controls,
+    .actions {
+        padding: 16px 20px;
+    }
+
+    .zoomControl {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .zoomLabel {
+        min-width: auto;
+    }
+}

@@ -30,6 +30,12 @@
     transform-origin: top right;
 }
 
+/* Portal mode — rendered in body */
+.menuPortal {
+    position: fixed;
+    z-index: 10100;
+}
+
 /* Only clip overflow for drill mode (content swaps in-place) */
 .menuDrill {
     overflow: hidden;

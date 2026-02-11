@@ -35,11 +35,8 @@
 }
 
 .popover {
-    position: absolute;
-    z-index: 1000;
-    bottom: 100%;
-    left: 0;
-    margin-bottom: 8px;
+    position: fixed;
+    z-index: 10100;
     min-width: 280px;
     max-width: 340px;
     background: linear-gradient(145deg, #0a0a0a 0%, #111111 100%);
@@ -59,6 +56,10 @@
         pointer-events: none;
         border-radius: inherit;
     }
+}
+
+.popoverHidden {
+    display: none;
 }
 
 .fallbackContent {

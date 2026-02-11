@@ -9,6 +9,34 @@
     cursor: pointer;
 }
 
+/* Backdrop for modal mode */
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    animation: backdropIn 0.25s ease forwards;
+}
+
+.backdropClosing {
+    animation: backdropOut 0.2s ease forwards;
+}
+
+@keyframes backdropIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes backdropOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
 .panel {
     display: flex;
     flex-direction: column;
@@ -28,6 +56,14 @@
 .panelClosing {
     animation: panelClose 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     pointer-events: none;
+}
+
+.panelHidden {
+    display: none;
+}
+
+.backdropHidden {
+    display: none;
 }
 
 @keyframes panelOpen {
@@ -70,7 +106,7 @@
     flex-direction: row;
     align-items: flex-end;
     gap: 12px;
-    padding: 30px 20px 12px;
+    padding: 40px 20px 12px;
     margin-top: -50px;
     position: relative;
 }
@@ -103,6 +139,23 @@
     font-size: 14px;
     line-height: 1.1;
     color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+}
+
+.nicknameClickable {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: -2px -6px;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: var(--ps-hover, var(--hover, rgba(255, 255, 255, 0.08)));
+        color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    }
+
+    &:active {
+        background: var(--ps-hover, var(--hover, rgba(255, 255, 255, 0.12)));
+    }
 }
 
 /* When no banner, adjust userInfo */

@@ -2,8 +2,10 @@ import {
     useState,
     useRef,
     useCallback,
+    useEffect,
     type ReactNode,
 } from 'react'
+import { createPortal } from 'react-dom'
 import { UserCard, type UserCardUser } from '../UserCard'
 import styles from './userMention.module.scss'
 import clsx from 'clsx'
@@ -50,14 +52,50 @@ export function UserMention({
     className,
 }: UserMentionProps) {
     const [showPopover, setShowPopover] = useState(false)
+    const [hasOpened, setHasOpened] = useState(false)
     const [fetchedUser, setFetchedUser] = useState<UserCardUser | null>(null)
     const [fetching, setFetching] = useState(false)
     const [fetchDone, setFetchDone] = useState(false)
+    const [mounted, setMounted] = useState(false)
+    const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({})
 
     const hoverTimer = useRef<number | null>(null)
     const hideTimer = useRef<number | null>(null)
+    const triggerRef = useRef<HTMLSpanElement>(null)
 
     const user = userProp ?? fetchedUser
+
+    useEffect(() => setMounted(true), [])
+
+    // Mark as opened once
+    useEffect(() => {
+        if (showPopover && !hasOpened) setHasOpened(true)
+    }, [showPopover, hasOpened])
+
+    // Update position
+    const updatePosition = useCallback(() => {
+        const el = triggerRef.current
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        setPopoverStyle({
+            position: 'fixed',
+            top: rect.bottom + 8,
+            left: rect.left + rect.width / 2,
+            transform: 'translateX(-50%)',
+            zIndex: 10100,
+        })
+    }, [])
+
+    useEffect(() => {
+        if (!showPopover) return
+        updatePosition()
+        window.addEventListener('scroll', updatePosition, true)
+        window.addEventListener('resize', updatePosition)
+        return () => {
+            window.removeEventListener('scroll', updatePosition, true)
+            window.removeEventListener('resize', updatePosition)
+        }
+    }, [showPopover, updatePosition])
 
     const handleMouseEnter = useCallback(() => {
         if (hideTimer.current) {
@@ -91,38 +129,52 @@ export function UserMention({
         hideTimer.current = window.setTimeout(() => setShowPopover(false), 200)
     }, [])
 
+    const isHidden = hasOpened && !showPopover
+
+    const popoverContent = (
+        <div
+            className={clsx(styles.popover, isHidden && styles.popoverHidden)}
+            style={popoverStyle}
+            onMouseEnter={() => {
+                if (hideTimer.current) {
+                    clearTimeout(hideTimer.current)
+                    hideTimer.current = null
+                }
+            }}
+            onMouseLeave={handleMouseLeave}
+        >
+            {fetching && !user && (
+                <div className={styles.fallbackContent}>
+                    {loadingContent || 'Loading...'}
+                </div>
+            )}
+            {!fetching && !user && fetchDone && (
+                <div className={styles.fallbackContent}>
+                    {notFoundContent || 'User not found'}
+                </div>
+            )}
+            {user && (
+                <UserCard
+                    user={user}
+                    statusText={statusText}
+                    statusColor={statusColor}
+                />
+            )}
+        </div>
+    )
+
     return (
         <span
             className={clsx(styles.root, className)}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <span className={styles.trigger} role="button" tabIndex={0}>
+            <span ref={triggerRef} className={styles.trigger} role="button" tabIndex={0}>
                 <span className={styles.dot} style={{ background: dotColor }} aria-hidden />
                 <span className={styles.username}>{username}</span>
             </span>
 
-            {showPopover && (
-                <div className={styles.popover}>
-                    {fetching && !user && (
-                        <div className={styles.fallbackContent}>
-                            {loadingContent || 'Loading...'}
-                        </div>
-                    )}
-                    {!fetching && !user && fetchDone && (
-                        <div className={styles.fallbackContent}>
-                            {notFoundContent || 'User not found'}
-                        </div>
-                    )}
-                    {user && (
-                        <UserCard
-                            user={user}
-                            statusText={statusText}
-                            statusColor={statusColor}
-                        />
-                    )}
-                </div>
-            )}
+            {mounted && hasOpened && createPortal(popoverContent, document.body)}
         </span>
     )
 }

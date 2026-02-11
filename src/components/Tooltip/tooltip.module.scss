@@ -37,6 +37,59 @@
     }
 }
 
+.tooltipPortal {
+    position: fixed;
+    z-index: 10100;
+    height: fit-content;
+    width: fit-content;
+    max-width: 200px;
+
+    &.top {
+        transform: translate(-50%, -100%) scale(0.92);
+        &.visible { transform: translate(-50%, -100%) scale(1); }
+        .arrow {
+            bottom: -6px;
+            left: 50%;
+            margin-left: -5px;
+            border-top: none;
+            border-left: none;
+        }
+    }
+    &.bottom {
+        transform: translateX(-50%) scale(0.92);
+        &.visible { transform: translateX(-50%) scale(1); }
+        .arrow {
+            top: -6px;
+            left: 50%;
+            margin-left: -5px;
+            border-bottom: none;
+            border-right: none;
+        }
+    }
+    &.left {
+        transform: translate(-100%, -50%) scale(0.92);
+        &.visible { transform: translate(-100%, -50%) scale(1); }
+        .arrow {
+            right: -6px;
+            top: 50%;
+            margin-top: -5px;
+            border-bottom: none;
+            border-left: none;
+        }
+    }
+    &.right {
+        transform: translateY(-50%) scale(0.92);
+        &.visible { transform: translateY(-50%) scale(1); }
+        .arrow {
+            left: -6px;
+            top: 50%;
+            margin-top: -5px;
+            border-top: none;
+            border-right: none;
+        }
+    }
+}
+
 .arrow {
     position: absolute;
     width: 10px;

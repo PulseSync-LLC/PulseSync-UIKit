@@ -108,3 +108,7 @@ export type { UserMenuProps, UserMenuItem } from './components/UserMenu'
 /* ── NavigationBar ── */
 export { NavigationBar } from './components/NavigationBar'
 export type { NavigationBarProps, NavigationBarItem } from './components/NavigationBar'
+
+/* ── ImageCropModal ── */
+export { ImageCropModal } from './components/ImageCropModal'
+export type { ImageCropModalProps, ImageCropModalLabels, CropType } from './components/ImageCropModal'

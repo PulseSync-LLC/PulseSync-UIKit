@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import clsx from 'clsx'
 import styles from './dropdownMenu.module.scss'
 
@@ -347,9 +348,43 @@ export function DropdownMenu({
 }: DropdownMenuProps) {
     const [open, setOpen] = useState(false)
     const [closing, setClosing] = useState(false)
+    const [mounted, setMounted] = useState(false)
+    const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({})
     const wrapRef = useRef<HTMLDivElement>(null)
+    const triggerRef = useRef<HTMLDivElement>(null)
+    const menuRef = useRef<HTMLDivElement>(null)
 
     const showMenu = open || closing
+
+    useEffect(() => setMounted(true), [])
+
+    const updatePosition = useCallback(() => {
+        const el = triggerRef.current
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const style: React.CSSProperties = {
+            position: 'fixed',
+            top: rect.bottom + 4,
+            zIndex: 10100,
+        }
+        if (align === 'right') {
+            style.right = window.innerWidth - rect.right
+        } else {
+            style.left = rect.left
+        }
+        setMenuStyle(style)
+    }, [align])
+
+    useEffect(() => {
+        if (!open) return
+        updatePosition()
+        window.addEventListener('scroll', updatePosition, true)
+        window.addEventListener('resize', updatePosition)
+        return () => {
+            window.removeEventListener('scroll', updatePosition, true)
+            window.removeEventListener('resize', updatePosition)
+        }
+    }, [open, updatePosition])
 
     const closeMenu = useCallback(() => {
         if (!open) return
@@ -362,7 +397,11 @@ export function DropdownMenu({
 
     useEffect(() => {
         const handler = (e: MouseEvent) => {
-            if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) closeMenu()
+            const target = e.target as Node
+            if (wrapRef.current && !wrapRef.current.contains(target) &&
+                menuRef.current && !menuRef.current.contains(target)) {
+                closeMenu()
+            }
         }
         document.addEventListener('mousedown', handler)
         return () => document.removeEventListener('mousedown', handler)
@@ -379,30 +418,35 @@ export function DropdownMenu({
 
     const openDirection = align === 'right' ? 'left' : 'right'
 
+    const menuContent = showMenu && (
+        <div
+            ref={menuRef}
+            className={clsx(
+                styles.menu,
+                styles.menuPortal,
+                closing && styles.menuClosing,
+                align === 'right' && styles.menuRight,
+                mode === 'drill' && styles.menuDrill,
+                menuClassName,
+            )}
+            style={menuStyle}
+            onAnimationEnd={handleAnimEnd}
+        >
+            {mode === 'drill' ? (
+                <DrillPanel items={items} onClose={closeMenu} closeOnSelect={closeOnSelect} />
+            ) : (
+                items.map(item => (
+                    <HoverMenuItem key={item.key} item={item} onClose={closeMenu} openDirection={openDirection} closeOnSelect={closeOnSelect} />
+                ))
+            )}
+        </div>
+    )
+
     return (
         <div ref={wrapRef} className={clsx(styles.wrapper, className)}>
-            <div className={styles.trigger} onClick={toggle}>{children}</div>
+            <div ref={triggerRef} className={styles.trigger} onClick={toggle}>{children}</div>
 
-            {showMenu && (
-                <div
-                    className={clsx(
-                        styles.menu,
-                        closing && styles.menuClosing,
-                        align === 'right' && styles.menuRight,
-                        mode === 'drill' && styles.menuDrill,
-                        menuClassName,
-                    )}
-                    onAnimationEnd={handleAnimEnd}
-                >
-                    {mode === 'drill' ? (
-                        <DrillPanel items={items} onClose={closeMenu} closeOnSelect={closeOnSelect} />
-                    ) : (
-                        items.map(item => (
-                            <HoverMenuItem key={item.key} item={item} onClose={closeMenu} openDirection={openDirection} closeOnSelect={closeOnSelect} />
-                        ))
-                    )}
-                </div>
-            )}
+            {mounted && menuContent && createPortal(menuContent, document.body)}
         </div>
     )
 }
