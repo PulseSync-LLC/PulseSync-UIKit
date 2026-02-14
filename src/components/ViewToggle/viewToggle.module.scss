@@ -1,0 +1,45 @@
+.viewToggle {
+    position: relative;
+    display: flex;
+    padding: 4px;
+    background: var(--ps-surface-tertiary, var(--surface-secondary, #1a1a1a));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 8px;
+}
+
+.indicator {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 0;
+    background: var(--ps-text-primary, var(--text-primary, #ffffff));
+    border-radius: 6px;
+    z-index: 0;
+    transition:
+        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    cursor: pointer;
+    transition: color 0.2s ease;
+    border-radius: 6px;
+
+    &:hover {
+        color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    }
+
+    &.active {
+        color: var(--ps-background, var(--background, #0d0d0d));
+    }
+}

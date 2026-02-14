@@ -13,19 +13,21 @@
     font-size: 12px;
     font-weight: 600;
     font-family: inherit;
-    color: var(--ps-accent-muted, var(--accent-muted, #6d8cff));
+    color: var(--ps-accent-muted, var(--accent-muted));
     transition: color 0.15s ease;
     white-space: nowrap;
-    &:hover { color: var(--ps-text-primary, var(--text-primary, #ffffff)); }
+    &:hover { color: var(--ps-text-primary, var(--text-primary)); }
 }
 
 .trigger {
     display: inline-flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 8px;
     min-width: 0;
     cursor: pointer;
     transition: opacity 0.2s ease;
+    text-align: left;
 
     &:disabled {
         opacity: 0.35;
@@ -41,6 +43,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: left;
 }
 
 .chevron {
@@ -72,8 +75,8 @@
     position: fixed;
     z-index: 2000;
     padding: 6px;
-    background: var(--ps-surface-primary);
-    border: 1px solid var(--ps-border);
+    background: var(--ps-surface-primary, var(--surface-primary));
+    border: 1px solid var(--ps-border, var(--border));
     border-radius: var(--ps-radius-md);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
     max-height: 320px;
@@ -82,14 +85,34 @@
     animation: menuOpen 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.menuTop {
+    transform-origin: bottom center;
+    animation: menuOpenFromBottom 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .menuClosing {
     animation: menuClose 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.menuTop.menuClosing {
+    animation: menuCloseToBottom 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes menuOpen {
     from {
         opacity: 0;
         transform: translateY(-6px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes menuOpenFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(6px) scale(0.96);
     }
     to {
         opacity: 1;
@@ -105,6 +128,17 @@
     to {
         opacity: 0;
         transform: translateY(-6px) scale(0.96);
+    }
+}
+
+@keyframes menuCloseToBottom {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(6px) scale(0.96);
     }
 }
 

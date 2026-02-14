@@ -105,6 +105,10 @@ export type { AccordionProps, AccordionItem } from './components/Accordion'
 export { UserMenu } from './components/UserMenu'
 export type { UserMenuProps, UserMenuItem } from './components/UserMenu'
 
+/* ── UserCardTile ── */
+export { UserCardTile } from './components/UserCardTile'
+export type { UserCardTileProps, UserCardTileStatus } from './components/UserCardTile'
+
 /* ── NavigationBar ── */
 export { NavigationBar } from './components/NavigationBar'
 export type { NavigationBarProps, NavigationBarItem, NavigationBarSlotProps } from './components/NavigationBar'
@@ -112,3 +116,48 @@ export type { NavigationBarProps, NavigationBarItem, NavigationBarSlotProps } fr
 /* ── ImageCropModal ── */
 export { ImageCropModal } from './components/ImageCropModal'
 export type { ImageCropModalProps, ImageCropModalLabels, CropType } from './components/ImageCropModal'
+
+/* ── SearchBox ── */
+export { SearchBox } from './components/SearchBox'
+export type { SearchBoxProps } from './components/SearchBox'
+
+/* ── FilterButton ── */
+export { FilterButton } from './components/FilterButton'
+export type { FilterButtonProps } from './components/FilterButton'
+
+/* ── ViewToggle ── */
+export { ViewToggle } from './components/ViewToggle'
+export type { ViewToggleProps, ViewToggleValue, ViewToggleOption } from './components/ViewToggle'
+
+/* ── IconButton ── */
+export { IconButton } from './components/IconButton'
+export type { IconButtonProps, IconButtonVariant, IconButtonSize } from './components/IconButton'
+
+/* ── Breadcrumbs ── */
+export { Breadcrumbs } from './components/Breadcrumbs'
+export type { BreadcrumbsProps } from './components/Breadcrumbs'
+
+/* ── AchievementCard ── */
+export { AchievementCard } from './components/AchievementCard'
+export type {
+    AchievementCardProps,
+    AchievementCardDifficulty,
+    AchievementCardCriterion,
+} from './components/AchievementCard'
+
+/* ── Metrics (AreaChartCard, BreakdownCard, KpiGrid) ── */
+export { AreaChartCard, BreakdownCard, KpiGrid } from './components/Metrics'
+export type {
+    AreaChartCardProps,
+    BreakdownCardProps,
+    BreakdownCardMode,
+    BreakdownCardTone,
+    BreakdownCardLabels,
+    KpiGridProps,
+    KpiGridValues,
+    KpiGridLabels,
+    MetricsGranularity,
+    MetricsStatsPoint,
+    MetricsBreakdownItem,
+    MetricsHoveredKey,
+} from './components/Metrics'

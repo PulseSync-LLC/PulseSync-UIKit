@@ -1,7 +1,20 @@
 import { type ReactNode, useState, useRef, useEffect, useCallback } from 'react'
 import clsx from 'clsx'
+import { createPortal } from 'react-dom'
 import { Tooltip } from '../Tooltip'
 import styles from './navigationBar.module.scss'
+
+/** Item width (44) + gap (4) in responsive mode; total for n items = 48*n - 4 */
+const RESPONSIVE_ITEM_WIDTH = 48
+const RESPONSIVE_ITEM_GAP = 4
+
+function BurgerIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+            <path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+    )
+}
 
 export interface NavigationBarItem {
     /** Unique key */
@@ -118,8 +131,28 @@ export function NavigationBar({
 }: NavigationBarProps) {
     const [internalExpanded, setInternalExpanded] = useState(false)
     const expandTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const [overflowDetected, setOverflowDetected] = useState(false)
+    const [menuOpen, setMenuOpen] = useState(false)
+    const middleRef = useRef<HTMLDivElement | null>(null)
+    const menuRef = useRef<HTMLDivElement | null>(null)
 
     const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded
+
+    // In responsive mode: detect if nav items would overflow; if so, show burger menu
+    useEffect(() => {
+        if (!responsive || !middleRef.current || items.length === 0) return
+        const el = middleRef.current
+        const requiredWidth = items.length * RESPONSIVE_ITEM_WIDTH - RESPONSIVE_ITEM_GAP
+        const check = () => {
+            if (!el) return
+            const available = el.clientWidth
+            setOverflowDetected(requiredWidth > available)
+        }
+        check()
+        const ro = new ResizeObserver(check)
+        ro.observe(el)
+        return () => ro.disconnect()
+    }, [responsive, items.length])
 
     // Merge legacy props with new slot props
     const resolvedTopSlot: NavigationBarSlotProps = topSlot ?? {
@@ -160,6 +193,25 @@ export function NavigationBar({
             }
         }
     }, [])
+
+    // Close burger menu on outside click or Escape
+    useEffect(() => {
+        if (!menuOpen) return
+        const handle = (e: MouseEvent | KeyboardEvent) => {
+            if (e instanceof KeyboardEvent) {
+                if (e.key !== 'Escape') return
+            } else {
+                if (menuRef.current?.contains(e.target as Node)) return
+            }
+            setMenuOpen(false)
+        }
+        document.addEventListener('click', handle, true)
+        document.addEventListener('keydown', handle)
+        return () => {
+            document.removeEventListener('click', handle, true)
+            document.removeEventListener('keydown', handle)
+        }
+    }, [menuOpen])
 
     const barStyle: React.CSSProperties = {
         ...(defaultActiveColor ? { '--ps-nav-active': defaultActiveColor } : {}),
@@ -348,11 +400,93 @@ export function NavigationBar({
             {/* Horizontal mode: left/items/right in single row */}
             <div className={styles.horizontalContent}>
                 {renderSlot(leftSlot, 'left')}
-                <div className={styles.itemsHorizontal}>
-                    {renderItems()}
+                <div ref={middleRef} className={styles.middleWrap}>
+                    {responsive && overflowDetected ? (
+                        <button
+                            type="button"
+                            className={styles.burgerButton}
+                            onClick={() => setMenuOpen(o => !o)}
+                            aria-expanded={menuOpen}
+                            aria-label="Меню"
+                        >
+                            <span className={styles.iconWrap}>
+                                <BurgerIcon />
+                            </span>
+                        </button>
+                    ) : (
+                        <div className={styles.itemsHorizontal}>
+                            {renderItems()}
+                        </div>
+                    )}
                 </div>
                 {renderSlot(rightSlot, 'right')}
             </div>
+
+            {/* Burger menu overlay — list of items when overflow in responsive mode */}
+            {responsive && overflowDetected && menuOpen && typeof document !== 'undefined' &&
+                createPortal(
+                    <>
+                        <div
+                            className={styles.menuBackdrop}
+                            aria-hidden
+                            onClick={() => setMenuOpen(false)}
+                        />
+                        <div ref={menuRef} className={styles.menuPanel} role="dialog" aria-label="Навигация">
+                            {items.map(item => {
+                                const labelText = item.label || item.tooltip || ''
+                                const content = (
+                                    <>
+                                        <span className={styles.iconWrap}>
+                                            {item.icon}
+                                        </span>
+                                        {labelText && (
+                                            <span className={styles.menuItemLabel}>
+                                                {labelText}
+                                            </span>
+                                        )}
+                                    </>
+                                )
+                                const itemClass = clsx(
+                                    styles.menuItem,
+                                    item.active && styles.itemActive,
+                                    item.disabled && styles.itemDisabled,
+                                )
+                                const activeStyle = item.active && item.activeColor
+                                    ? { '--item-active-color': item.activeColor } as React.CSSProperties
+                                    : undefined
+                                if (item.href && !item.disabled) {
+                                    return (
+                                        <a
+                                            key={item.key}
+                                            href={item.href}
+                                            className={itemClass}
+                                            style={activeStyle}
+                                            onClick={() => setMenuOpen(false)}
+                                        >
+                                            {content}
+                                        </a>
+                                    )
+                                }
+                                return (
+                                    <button
+                                        key={item.key}
+                                        type="button"
+                                        className={itemClass}
+                                        style={activeStyle}
+                                        disabled={item.disabled}
+                                        onClick={() => {
+                                            item.onClick?.()
+                                            setMenuOpen(false)
+                                        }}
+                                    >
+                                        {content}
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    </>,
+                    document.body,
+                )}
         </nav>
     )
 }

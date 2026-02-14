@@ -143,23 +143,26 @@ export function UserMention({
             }}
             onMouseLeave={handleMouseLeave}
         >
-            {fetching && !user && (
-                <div className={styles.fallbackContent}>
-                    {loadingContent || 'Loading...'}
-                </div>
-            )}
-            {!fetching && !user && fetchDone && (
-                <div className={styles.fallbackContent}>
-                    {notFoundContent || 'User not found'}
-                </div>
-            )}
-            {user && (
-                <UserCard
-                    user={user}
-                    statusText={statusText}
-                    statusColor={statusColor}
-                />
-            )}
+            <div className={styles.popoverInner}>
+                {fetching && !user && (
+                    <div className={styles.fallbackContent}>
+                        {loadingContent || 'Loading...'}
+                    </div>
+                )}
+                {!fetching && !user && fetchDone && (
+                    <div className={styles.fallbackContent}>
+                        {notFoundContent || 'User not found'}
+                    </div>
+                )}
+                {user && (
+                    <UserCard
+                        user={user}
+                        statusText={statusText}
+                        statusColor={statusColor}
+                        noAnimation
+                    />
+                )}
+            </div>
         </div>
     )
 

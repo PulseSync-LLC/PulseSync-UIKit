@@ -1,0 +1,36 @@
+$psBorder: var(--ps-border, var(--border));
+$psSurfaceSecondary: var(--ps-surface-secondary, var(--surface-secondary));
+$psTextPrimary: var(--ps-text-primary, var(--text-primary));
+$psTextMuted: var(--ps-text-muted, var(--text-muted));
+
+.kpiGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.kpiCard {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid $psBorder;
+    background: $psSurfaceSecondary;
+}
+
+.kpiValue {
+    font-size: 30px;
+    font-weight: 900;
+    color: $psTextPrimary;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpiLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: $psTextMuted;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}

@@ -32,7 +32,7 @@ export default defineConfig({
             fileName: 'pulsesync-ui',
         },
         rollupOptions: {
-            external: ['react', 'react-dom', 'react/jsx-runtime', 'framer-motion'],
+            external: ['react', 'react-dom', 'react/jsx-runtime', 'framer-motion', 'recharts'],
             output: {
                 globals: {
                     react: 'React',

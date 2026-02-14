@@ -1,0 +1,114 @@
+$psBorder: var(--ps-border, var(--border));
+$psSurfacePrimary: var(--ps-surface-primary, var(--surface-primary));
+$psSurfaceSecondary: var(--ps-surface-secondary, var(--surface-secondary));
+$psSurfaceTertiary: var(--ps-surface-tertiary, var(--surface-secondary));
+$psTextPrimary: var(--ps-text-primary, var(--text-primary));
+$psTextMuted: var(--ps-text-muted, var(--text-muted));
+
+.panel {
+    border: 1px solid $psBorder;
+    background: $psSurfaceTertiary;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.panelDimmed {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.panelHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.panelTitle {
+    margin: 0;
+    color: $psTextPrimary;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.chartPanel {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+            radial-gradient(120% 58% at 50% -5%, color-mix(in srgb, var(--chart-accent) 16%, transparent), transparent 72%),
+            linear-gradient(180deg, color-mix(in srgb, var(--chart-accent) 5%, transparent), transparent 44%);
+        pointer-events: none;
+    }
+}
+
+.chartStats {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+
+    span {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        font-weight: 700;
+        color: $psTextMuted;
+        border: 1px solid color-mix(in srgb, var(--chart-accent) 25%, $psBorder);
+        background: color-mix(in srgb, var(--chart-accent) 12%, transparent);
+        border-radius: 999px;
+        padding: 4px 8px;
+        letter-spacing: 0.03em;
+    }
+
+    b {
+        color: $psTextPrimary;
+        font-weight: 800;
+        font-size: 11px;
+    }
+}
+
+.chartWrap {
+    width: 100%;
+    height: 210px;
+}
+
+.chartGrid {
+    stroke: color-mix(in srgb, $psBorder 85%, transparent);
+}
+
+.chartTooltip {
+    background: $psSurfacePrimary;
+    border: 1px solid $psBorder;
+    border-radius: 10px;
+    padding: 8px 10px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+    min-width: 94px;
+}
+
+.chartTooltipDate {
+    color: $psTextMuted;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.chartTooltipValue {
+    color: $psTextPrimary;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.empty {
+    color: $psTextMuted;
+    font-size: 13px;
+}

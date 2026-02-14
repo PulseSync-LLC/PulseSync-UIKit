@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { createPortal } from 'react-dom'
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { Button } from '@/components/Button'
 import styles from './confirmModal.module.scss'
@@ -37,7 +38,7 @@ export function ConfirmModal({
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [isOpen, onCancel])
 
-    return (
+    const overlayContent = (
         <AnimatePresence>
             {isOpen && (
                 <motion.div
@@ -81,6 +82,8 @@ export function ConfirmModal({
             )}
         </AnimatePresence>
     )
+
+    return typeof document !== 'undefined' ? createPortal(overlayContent, document.body) : null
 }
 
 type ConfirmOptions = {

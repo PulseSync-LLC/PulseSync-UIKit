@@ -39,23 +39,18 @@
     z-index: 10100;
     min-width: 280px;
     max-width: 340px;
-    background: linear-gradient(145deg, #0a0a0a 0%, #111111 100%);
-    border: 1px solid #2a2a2a;
+    background: var(--ps-surface-primary, #0d0d0d);
+    border: 1px solid var(--ps-border, #2a2a2a);
     border-radius: 12px;
-    box-shadow:
-        0 24px 48px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     pointer-events: auto;
+}
 
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse 120% 80% at 0% 0%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
-        pointer-events: none;
-        border-radius: inherit;
-    }
+.popoverInner {
+    position: relative;
+    min-height: 120px;
+    opacity: 1;
 }
 
 .popoverHidden {
@@ -64,7 +59,11 @@
 
 .fallbackContent {
     font-size: 13px;
-    color: #666666;
+    color: var(--ps-text-muted, #666666);
     margin: 0;
     padding: 18px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

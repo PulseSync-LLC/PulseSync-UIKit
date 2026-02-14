@@ -1,0 +1,35 @@
+.filterBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--ps-surface-tertiary, var(--surface-secondary, #1a1a1a));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 8px;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--ps-font-family, inherit);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: var(--ps-border-hover, var(--border-hover, #404040));
+        color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    }
+
+    &.active {
+        background: var(--ps-text-primary, var(--text-primary, #ffffff));
+        color: var(--ps-background, var(--background, #0d0d0d));
+        border-color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    svg {
+        flex-shrink: 0;
+    }
+}

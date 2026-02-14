@@ -24,6 +24,8 @@ export type OptionPickerProps = {
     optionClassName?: string
     wrapperClassName?: string
     showChevron?: boolean
+    /** Open menu above the trigger */
+    menuPlacement?: 'top' | 'bottom'
     ariaLabel?: string
     onTriggerMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
@@ -41,6 +43,7 @@ export function OptionPicker({
     optionClassName,
     wrapperClassName,
     showChevron = true,
+    menuPlacement = 'bottom',
     ariaLabel,
     onTriggerMouseDown,
 }: OptionPickerProps) {
@@ -66,12 +69,21 @@ export function OptionPicker({
     const updatePosition = useCallback(() => {
         const rect = triggerRef.current?.getBoundingClientRect()
         if (!rect) return
-        setMenuStyle({
-            top: rect.bottom + 6,
-            left: rect.left,
-            minWidth: rect.width,
-        })
-    }, [])
+        const gap = 6
+        if (menuPlacement === 'top') {
+            setMenuStyle({
+                bottom: typeof window !== 'undefined' ? window.innerHeight - rect.top + gap : rect.bottom + gap,
+                left: rect.left,
+                minWidth: rect.width,
+            })
+        } else {
+            setMenuStyle({
+                top: rect.bottom + gap,
+                left: rect.left,
+                minWidth: rect.width,
+            })
+        }
+    }, [menuPlacement])
 
     const closeMenu = useCallback(() => {
         if (!open) return
@@ -164,7 +176,14 @@ export function OptionPicker({
     const wrapperClasses = [styles.wrapper, open ? styles.open : '', wrapperClassName]
         .filter(Boolean)
         .join(' ')
-    const menuClasses = [styles.menu, closing ? styles.menuClosing : '', menuClassName].filter(Boolean).join(' ')
+    const menuClasses = [
+        styles.menu,
+        menuPlacement === 'top' ? styles.menuTop : '',
+        closing ? styles.menuClosing : '',
+        menuClassName,
+    ]
+        .filter(Boolean)
+        .join(' ')
 
     const showMenu = open || closing
 

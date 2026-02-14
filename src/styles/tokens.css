@@ -1,105 +1,53 @@
 /*
  * PulseSync Design Tokens
- * Monochrome design system with dark/light theme support.
- *
- * Usage:
- *   - Import this file once at the root of your app:
- *       import '@maks1mio/pulsesync-uikit/styles'
- *   - Or import directly:
- *       import '@maks1mio/pulsesync-uikit/dist/styles.css'
- *   - Theme is controlled via `data-theme` attribute on <html> or <body>.
- *     Default (no attribute) = dark theme.
+ * All components use --ps-* with fallback to canonical theme variables.
+ * To theme the kit: set in :root or [data-theme='…'] the variables from
+ * the Colors page (e.g. --background, --surface-primary, --text-primary).
+ * --ps-* here mirror those so one theme file drives the whole UI.
  */
 
 :root {
-    /* ── Core palette ── */
-    --ps-background: #040404;
-    --ps-background-rgb: 4, 4, 4;
-    --ps-foreground: #ffffff;
+    --ps-background: var(--background, #040404);
+    --ps-background-rgb: var(--background-rgb, 4, 4, 4);
+    --ps-foreground: var(--foreground, #ffffff);
 
-    /* ── Surfaces ── */
-    --ps-surface-primary: #0a0a0a;
-    --ps-surface-secondary: #111111;
-    --ps-surface-tertiary: #1a1a1a;
-    --ps-surface-elevated: #222222;
+    --ps-surface-primary: var(--surface-primary, #0a0a0a);
+    --ps-surface-secondary: var(--surface-secondary, #111111);
+    --ps-surface-tertiary: var(--surface-tertiary, #1a1a1a);
+    --ps-surface-elevated: var(--surface-elevated, #222222);
 
-    /* ── Borders ── */
-    --ps-border: #2a2a2a;
-    --ps-border-hover: #404040;
-    --ps-line: rgba(255, 255, 255, 0.1);
+    --ps-border: var(--border, #2a2a2a);
+    --ps-border-hover: var(--border-hover, #404040);
+    --ps-line: var(--line, rgba(255, 255, 255, 0.1));
 
-    /* ── Text hierarchy ── */
-    --ps-text-primary: #ffffff;
-    --ps-text-secondary: #a0a0a0;
-    --ps-text-muted: #666666;
-    --ps-text-disabled: #404040;
+    --ps-text-primary: var(--text-primary, #ffffff);
+    --ps-text-secondary: var(--text-secondary, #a0a0a0);
+    --ps-text-muted: var(--text-muted, #666666);
+    --ps-text-disabled: var(--text-disabled, #404040);
 
-    /* ── Interactive states ── */
-    --ps-hover: rgba(255, 255, 255, 0.05);
-    --ps-active: rgba(255, 255, 255, 0.1);
-    --ps-focus-ring: rgba(255, 255, 255, 0.3);
+    --ps-hover: var(--hover, rgba(255, 255, 255, 0.05));
+    --ps-active: var(--active, rgba(255, 255, 255, 0.1));
+    --ps-focus-ring: var(--focus-ring, rgba(255, 255, 255, 0.3));
 
-    /* ── Accent ── */
-    --ps-accent: #ffffff;
-    --ps-accent-muted: #888888;
+    --ps-accent: var(--accent, #ffffff);
+    --ps-accent-muted: var(--accent-muted, #888888);
+    --ps-nav-active: var(--accent, #5865f2);
 
-    /* ── Navigation (Discord-style) ── */
-    --ps-nav-active: #5865f2;
+    --ps-danger: var(--danger, #ff4444);
+    --ps-success: var(--success, #44ff88);
+    --ps-warning: var(--warning, #ffaa44);
 
-    /* ── Semantic ── */
-    --ps-danger: #ff4444;
-    --ps-success: #44ff88;
-    --ps-warning: #ffaa44;
+    --ps-skeleton-base: var(--skeleton-base, #1a1a1a);
+    --ps-skeleton-highlight: var(--skeleton-highlight, #2a2a2a);
 
-    /* ── Skeleton ── */
-    --ps-skeleton-base: #1a1a1a;
-    --ps-skeleton-highlight: #2a2a2a;
-
-    /* ── Transitions ── */
-    --ps-transition: cubic-bezier(0.45, 0.65, 0.395, 1) all 0.2s;
+    --ps-transition: var(--transition, cubic-bezier(0.45, 0.65, 0.395, 1) all 0.2s);
     --ps-transition-easing: cubic-bezier(0.45, 0.65, 0.395, 1);
+    --ps-font-family: var(--font-family, 'Nunito'), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-    /* ── Typography ── */
-    --ps-font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-
-    /* ── Radii ── */
     --ps-radius-sm: 8px;
     --ps-radius-md: 10px;
     --ps-radius-lg: 12px;
     --ps-radius-xl: 16px;
-}
-
-/* ── Light theme ── */
-[data-theme='light'] {
-    --ps-nav-active: #5865f2;
-
-    --ps-background: #f8f8f8;
-    --ps-background-rgb: 248, 248, 248;
-    --ps-foreground: #0a0a0a;
-
-    --ps-surface-primary: #ffffff;
-    --ps-surface-secondary: #f0f0f0;
-    --ps-surface-tertiary: #e0e0e0;
-    --ps-surface-elevated: #ffffff;
-
-    --ps-border: #d0d0d0;
-    --ps-border-hover: #a0a0a0;
-    --ps-line: rgba(0, 0, 0, 0.15);
-
-    --ps-text-primary: #0a0a0a;
-    --ps-text-secondary: #444444;
-    --ps-text-muted: #707070;
-    --ps-text-disabled: #a0a0a0;
-
-    --ps-hover: rgba(0, 0, 0, 0.06);
-    --ps-active: rgba(0, 0, 0, 0.1);
-    --ps-focus-ring: rgba(0, 0, 0, 0.25);
-
-    --ps-accent: #0a0a0a;
-    --ps-accent-muted: #555555;
-
-    --ps-skeleton-base: #e0e0e0;
-    --ps-skeleton-highlight: #eeeeee;
 }
 
 [data-theme='dark'] {

@@ -11,6 +11,11 @@
     cursor: pointer;
     transition: 0.2s ease;
     animation: fadeInUp 0.2s ease-out forwards;
+
+    &.noAnimation {
+        animation: none;
+        opacity: 1;
+    }
 }
 
 @keyframes fadeInUp {

@@ -1,0 +1,233 @@
+$psBorder: var(--ps-border, var(--border));
+$psSurfacePrimary: var(--ps-surface-primary, var(--surface-primary));
+$psSurfaceTertiary: var(--ps-surface-tertiary, var(--surface-secondary));
+$psTextPrimary: var(--ps-text-primary, var(--text-primary));
+$psTextSecondary: var(--ps-text-secondary, var(--text-secondary));
+$psTextMuted: var(--ps-text-muted, var(--text-muted));
+
+.panel {
+    border: 1px solid $psBorder;
+    background: $psSurfaceTertiary;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.panelHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.panelTitle {
+    margin: 0;
+    color: $psTextPrimary;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.itemDimmed {
+    opacity: 0.4;
+    transition: opacity 0.06s ease-out;
+}
+
+.itemHighlighted {
+    opacity: 1;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--donut-accent, $psTextPrimary) 40%, transparent);
+    z-index: 1;
+    position: relative;
+    transition: box-shadow 0.06s ease-out, opacity 0.06s ease-out;
+}
+
+.empty {
+    color: $psTextMuted;
+    font-size: 13px;
+}
+
+.donutPanel {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+            radial-gradient(110% 70% at 20% 0%, color-mix(in srgb, var(--donut-accent) 14%, transparent), transparent 72%),
+            linear-gradient(180deg, color-mix(in srgb, var(--donut-accent) 6%, transparent), transparent 42%);
+        pointer-events: none;
+    }
+}
+
+.donutLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.donutWrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    filter: drop-shadow(0 4px 14px color-mix(in srgb, var(--donut-accent) 20%, transparent));
+}
+
+.donutCenter {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    gap: 2px;
+
+    span {
+        font-size: 10px;
+        color: $psTextMuted;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+    }
+
+    strong {
+        font-size: 18px;
+        line-height: 1.15;
+        font-weight: 900;
+        color: $psTextPrimary;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.donutLegend {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.donutLegendItem {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid color-mix(in srgb, var(--donut-accent) 18%, $psBorder);
+    background: color-mix(in srgb, var(--donut-accent) 7%, $psSurfacePrimary);
+    border-radius: 10px;
+    padding: 8px 10px;
+}
+
+.donutDot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--donut-accent) 16%, transparent);
+}
+
+.donutName {
+    font-size: 12px;
+    color: $psTextSecondary;
+    overflow-wrap: anywhere;
+}
+
+.donutValues {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: $psTextPrimary;
+    white-space: nowrap;
+
+    span {
+        font-size: 11px;
+        color: $psTextSecondary;
+        font-weight: 600;
+        border: 1px solid color-mix(in srgb, var(--donut-accent) 26%, $psBorder);
+        background: color-mix(in srgb, var(--donut-accent) 12%, transparent);
+        border-radius: 999px;
+        padding: 2px 6px;
+    }
+}
+
+.breakdownSubsection {
+    margin-top: 2px;
+}
+
+.breakdownCaption {
+    color: $psTextMuted;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.breakdownList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.breakdownItem {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(120px, 2fr) auto;
+    gap: 8px;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.breakdownLabel {
+    font-size: 12px;
+    color: $psTextSecondary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.breakdownBarTrack {
+    position: relative;
+    height: 7px;
+    border-radius: 999px;
+    background: $psSurfaceTertiary;
+    overflow: hidden;
+}
+
+.breakdownBar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 999px;
+    background: $psTextPrimary;
+}
+
+.breakdownCount {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: $psTextPrimary;
+    font-weight: 700;
+    min-width: 36px;
+    text-align: right;
+}
+
+.breakdownPercent {
+    color: $psTextMuted;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+    .donutLayout {
+        width: 100%;
+    }
+
+    .donutWrap {
+        margin: 0 auto;
+    }
+}

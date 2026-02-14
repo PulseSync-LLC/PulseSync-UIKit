@@ -1,0 +1,31 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    svg {
+        color: var(--ps-text-muted, var(--text-muted, #666666));
+        flex-shrink: 0;
+    }
+}
+
+.beforePage {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ps-text-muted, var(--text-muted, #666666));
+    font-family: var(--ps-font-family, inherit);
+}
+
+.mainPage {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    font-family: var(--ps-font-family, inherit);
+}

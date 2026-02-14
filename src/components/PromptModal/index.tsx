@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { createPortal } from 'react-dom'
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import styles from './promptModal.module.scss'
 
@@ -52,7 +53,7 @@ export function PromptModal({
         onConfirm(value)
     }, [onConfirm, value])
 
-    return (
+    const overlayContent = (
         <AnimatePresence>
             {isOpen && (
                 <motion.div
@@ -105,6 +106,8 @@ export function PromptModal({
             )}
         </AnimatePresence>
     )
+
+    return typeof document !== 'undefined' ? createPortal(overlayContent, document.body) : null
 }
 
 type PromptOptions = {

@@ -1,0 +1,110 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+}
+
+.searchBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    max-width: 400px;
+    background: var(--ps-surface-tertiary, var(--surface-secondary, #1a1a1a));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: border-color 0.2s ease;
+
+    &:focus-within {
+        border-color: var(--ps-text-primary, var(--text-primary, #ffffff));
+    }
+
+    .inputWrap {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    input {
+        flex: 1;
+        min-width: 0;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--ps-text-primary, var(--text-primary, #ffffff));
+        font-size: 14px;
+        line-height: 1.4;
+        font-family: var(--ps-font-family, inherit);
+
+        &::placeholder {
+            color: var(--ps-text-muted, var(--text-muted, #666666));
+        }
+    }
+
+    .searchIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--ps-text-muted, var(--text-muted, #666666));
+
+        svg {
+            display: block;
+            vertical-align: middle;
+        }
+    }
+
+    .rightAddons {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+        margin-left: 4px;
+    }
+}
+
+.preview {
+    position: fixed;
+    z-index: 2000;
+    padding: 6px;
+    background: var(--ps-surface-primary, var(--surface-primary, #0d0d0d));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: var(--ps-radius-md, 8px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    max-height: 320px;
+    overflow-y: auto;
+    transform-origin: top center;
+    animation: searchPreviewOpen 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    box-sizing: border-box;
+}
+
+.previewClosing {
+    animation: searchPreviewClose 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes searchPreviewOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes searchPreviewClose {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.96);
+    }
+}

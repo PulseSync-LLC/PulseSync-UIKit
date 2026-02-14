@@ -42,13 +42,15 @@ export interface UserCardProps {
     statusText?: string
     /** Status indicator color (CSS color). */
     statusColor?: string
+    /** Skip entrance animation (e.g. when used in popover). */
+    noAnimation?: boolean
     /** Additional class on the root element. */
     className?: string
 }
 
 /* ── Component ── */
 
-export function UserCard({ user, statusText, statusColor, className }: UserCardProps) {
+export function UserCard({ user, statusText, statusColor, noAnimation, className }: UserCardProps) {
     const bannerBg = user.bannerUrl
         ? `linear-gradient(0deg, #2C303F 0%, rgba(55,60,80,0.3) 100%), url(${user.bannerUrl})`
         : 'linear-gradient(0deg, #2C303F 0%, rgba(55,60,80,0.3) 100%)'
@@ -65,7 +67,7 @@ export function UserCard({ user, statusText, statusColor, className }: UserCardP
     const style = { '--ps-user-status-color': displayColor } as React.CSSProperties
 
     return (
-        <div className={clsx(styles.container, className)} style={style} aria-hidden>
+        <div className={clsx(styles.container, noAnimation && styles.noAnimation, className)} style={style} aria-hidden>
             <div
                 className={styles.topSection}
                 style={{ background: bannerBg }}
