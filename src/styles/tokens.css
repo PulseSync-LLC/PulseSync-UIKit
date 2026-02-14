@@ -31,6 +31,7 @@
 
     --ps-accent: var(--accent, #ffffff);
     --ps-accent-muted: var(--accent-muted, #888888);
+    --ps-accent-foreground: var(--accent-foreground, #040404);
     --ps-nav-active: var(--accent, #5865f2);
 
     --ps-danger: var(--danger, #ff4444);

@@ -215,10 +215,10 @@
     max-width: 160px;
 }
 
-/* Active state */
+/* Active state — background from accent, text must contrast */
 .itemActive {
     background: var(--item-active-color, var(--ps-nav-active, var(--accent)));
-    color: var(--ps-text-primary, var(--text-primary));
+    color: var(--ps-accent-foreground, var(--accent-foreground, var(--text-primary)));
 
     &:hover:not(:disabled) {
         background: var(--item-active-color, var(--ps-nav-active, var(--accent)));
@@ -400,6 +400,7 @@
     /* Active state — more visible */
     .barResponsive .itemActive {
         background: var(--item-active-color, var(--ps-nav-active, var(--accent)));
+        color: var(--ps-accent-foreground, var(--accent-foreground, var(--text-primary)));
     }
 
     /* Don't expand on mobile */
