@@ -1,90 +1,75 @@
 {
-    "name": "@maks1mio/pulsesync-uikit",
-    "version": "1.1.0",
-    "description": "PulseSync UI Kit — shared component library for PulseSync apps",
-    "type": "module",
-    "main": "./dist/pulsesync-ui.cjs",
-    "module": "./dist/pulsesync-ui.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/pulsesync-ui.js",
-            "require": "./dist/pulsesync-ui.cjs"
-        },
-        "./styles": "./dist/index.css"
+  "name": "@maks1mio/pulsesync-uikit",
+  "version": "1.1.0",
+  "description": "PulseSync UI Kit — shared component library for PulseSync apps",
+  "type": "module",
+  "main": "./dist/pulsesync-ui.cjs",
+  "module": "./dist/pulsesync-ui.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/pulsesync-ui.js",
+      "require": "./dist/pulsesync-ui.cjs"
     },
-    "files": [
-        "dist"
-    ],
-    "sideEffects": [
-        "**/*.css",
-        "**/*.scss"
-    ],
-    "scripts": {
-        "dev": "vite build --watch",
-        "build": "tsc --noEmit && vite build",
-        "typecheck": "tsc --noEmit",
-        "release:local": "node scripts/publish-local.mjs"
-    },
-    "peerDependencies": {
-        "@xyflow/react": ">=12.0.0",
-        "framer-motion": ">=10.0.0",
-        "react": ">=18.0.0",
-        "react-dom": ">=18.0.0",
-        "react-easy-crop": ">=5.0.0",
-        "react-is": ">=16.0.0",
-        "recharts": ">=2.0.0"
-    },
-    "peerDependenciesMeta": {
-        "@xyflow/react": {
-            "optional": true
-        },
-        "react-easy-crop": {
-            "optional": true
-        }
-    },
-    "dependencies": {
-        "clsx": "^2.1.1",
-        "framer-motion": ">=10.0.0",
-        "react-is": ">=16.0.0",
-        "recharts": ">=2.0.0"
-    },
-    "devDependencies": {
-        "@types/react": "^19.0.0",
-        "@types/react-dom": "^19.0.0",
-        "@vitejs/plugin-react-swc": "^4.0.0",
-        "@xyflow/react": "^12.10.1",
-        "framer-motion": "^12.33.0",
-        "glob": "^11.0.0",
-        "react": "^19.2.4",
-        "react-dom": "^19.2.4",
-        "react-easy-crop": "^5.1.0",
-        "recharts": "^2.0.0",
-        "sass": "^1.97.0",
-        "typescript": "^5.9.0",
-        "vite": "^6.0.0",
-        "vite-plugin-dts": "^4.0.0",
-        "vite-plugin-lib-inject-css": "^2.0.0"
-    },
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/PulseSync-LLC/PulseSync-UIKit.git"
-    },
-    "homepage": "https://github.com/PulseSync-LLC/PulseSync-UIKit#readme",
-    "bugs": {
-        "url": "https://github.com/PulseSync-LLC/PulseSync-UIKit/issues"
-    },
-    "keywords": [
-        "react",
-        "ui",
-        "components",
-        "uikit",
-        "pulsesync",
-        "design-system"
-    ],
-    "publishConfig": {
-        "access": "public"
+    "./styles": "./dist/index.css"
+  },
+  "files": ["dist"],
+  "sideEffects": ["**/*.css", "**/*.scss"],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "release:local": "node scripts/publish-local.mjs"
+  },
+  "peerDependencies": {
+    "framer-motion": ">=10.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "react-easy-crop": ">=5.0.0",
+    "react-is": ">=16.0.0",
+    "recharts": ">=2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-easy-crop": {
+      "optional": true
     }
+  },
+  "dependencies": {
+    "@xyflow/react": ">=12.0.0",
+    "clsx": "^2.1.1",
+    "framer-motion": ">=10.0.0",
+    "react-is": ">=16.0.0",
+    "recharts": ">=2.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react-swc": "^4.0.0",
+    "@xyflow/react": "^12.10.1",
+    "framer-motion": "^12.33.0",
+    "glob": "^11.0.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-easy-crop": "^5.1.0",
+    "recharts": "^2.0.0",
+    "sass": "^1.97.0",
+    "typescript": "^5.9.0",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "vite-plugin-lib-inject-css": "^2.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PulseSync-LLC/PulseSync-UIKit.git"
+  },
+  "homepage": "https://github.com/PulseSync-LLC/PulseSync-UIKit#readme",
+  "bugs": {
+    "url": "https://github.com/PulseSync-LLC/PulseSync-UIKit/issues"
+  },
+  "keywords": ["react", "ui", "components", "uikit", "pulsesync", "design-system"],
+  "publishConfig": {
+    "access": "public"
+  }
 }

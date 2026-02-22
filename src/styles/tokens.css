@@ -1,9 +1,10 @@
 /*
  * PulseSync Design Tokens
  * All components use --ps-* with fallback to canonical theme variables.
- * To theme the kit: set in :root or [data-theme='…'] the variables from
- * the Colors page (e.g. --background, --surface-primary, --text-primary).
- * --ps-* here mirror those so one theme file drives the whole UI.
+ * To theme the kit: set in :root or [data-theme='…'] the variables below
+ * (e.g. --background, --surface-primary, --text-primary, --accent).
+ * Same set is used on the website and in the client (theme-tokens.css)
+ * so you can change colors in one place. --ps-* mirror those variables.
  */
 
 :root {
