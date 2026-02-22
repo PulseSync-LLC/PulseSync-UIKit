@@ -1,0 +1,126 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.addSectionBtn {
+    align-self: flex-start;
+}
+
+.sectionBlock {
+    padding: 16px;
+    background: var(--ps-surface-secondary, var(--surface-secondary, #111));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 12px;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.sectionTitleInput {
+    flex: 1;
+    min-width: 0;
+}
+
+.removeSectionBtn {
+    flex-shrink: 0;
+}
+
+.itemsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.addItemBtn {
+    align-self: flex-start;
+}
+
+.itemBlock {
+    padding: 12px;
+    background: var(--ps-surface-tertiary, var(--surface-tertiary, #1a1a1a));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.itemRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.itemTypeSelect {
+    width: 180px;
+}
+
+.itemIdInput {
+    flex: 1;
+    min-width: 140px;
+}
+
+.removeItemBtn {
+    flex-shrink: 0;
+}
+
+.itemField {
+    max-width: 100%;
+}
+
+.textareaRow {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.textareaLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ps-text-secondary, var(--text-secondary, #a0a0a0));
+}
+
+.textarea {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--ps-text-primary, var(--text-primary, #fff));
+    background: var(--ps-surface-primary, var(--surface-primary, #0a0a0a));
+    border: 1px solid var(--ps-border, var(--border, #2a2a2a));
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 56px;
+
+    &::placeholder {
+        color: var(--ps-text-tertiary, #666);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: var(--ps-accent, var(--accent, #fff));
+    }
+}
+
+.sliderFields {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.smallNum {
+    max-width: 100%;
+}
+
+@media (max-width: 520px) {
+    .sliderFields {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

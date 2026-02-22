@@ -1,0 +1,530 @@
+/* ── Blueprint Editor — uses global --ps-* design tokens ───────── */
+
+$bp-bg:           var(--ps-surface-primary, #0d0d0d);
+$bp-bg-grid:      var(--ps-surface-primary, #0d0d0d);
+$bp-surface:      var(--ps-surface-secondary, #151515);
+$bp-surface-alt:  var(--ps-surface-tertiary, #1a1a1a);
+$bp-border:       var(--ps-border, #2a2a2a);
+$bp-border-hover: var(--ps-border-hover, #3a3a3a);
+$bp-text:         var(--ps-text-primary, #e8e8e8);
+$bp-text-dim:     var(--ps-text-secondary, #888);
+$bp-text-muted:   var(--ps-text-tertiary, #555);
+$bp-accent:       var(--ps-border-hover, #66e3ff);
+$bp-danger:       var(--ps-text-danger, #e55);
+
+$radius:          8px;
+$radius-sm:       4px;
+
+/* ── Wrapper ───────────────────────────────────────────── */
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    background: $bp-bg;
+    border: 1px solid $bp-border;
+    border-radius: $radius;
+    overflow: hidden;
+    user-select: none;
+    position: relative;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    background: $bp-surface;
+    border-bottom: 1px solid $bp-border;
+    flex-shrink: 0;
+    z-index: 5;
+}
+
+.zoomLabel {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 500;
+    color: $bp-text-dim;
+    font-variant-numeric: tabular-nums;
+}
+
+.flowContainer {
+    flex: 1;
+    position: relative;
+}
+
+/* ── ReactFlow overrides ──────────────────────────────── */
+
+.flowContainer :global {
+    .react-flow {
+        background: $bp-bg-grid;
+    }
+
+    .react-flow__background {
+        opacity: 1;
+    }
+
+    .react-flow__controls {
+        border: 1px solid $bp-border;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .react-flow__controls-button {
+        background: $bp-surface;
+        border: none;
+        border-bottom: 1px solid $bp-border;
+        color: $bp-text;
+        width: 28px;
+        height: 28px;
+
+        &:hover {
+            background: $bp-surface-alt;
+        }
+
+        svg {
+            fill: $bp-text;
+        }
+    }
+
+    .react-flow__edge-path {
+        stroke-width: 2;
+    }
+
+    .react-flow__handle {
+        border: none;
+    }
+
+    .react-flow__selection {
+        border: 1px solid $bp-accent;
+        background: rgba(102, 227, 255, 0.06);
+    }
+}
+
+/* ── Base Node ────────────────────────────────────────── */
+
+.ueNode {
+    min-width: 260px;
+    max-width: 340px;
+    border-radius: $radius;
+    border: 1px solid $bp-border;
+    background: $bp-surface;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    font-size: 12px;
+    color: $bp-text;
+    cursor: grab;
+    transition: border-color 0.12s, box-shadow 0.12s;
+
+    &:hover {
+        border-color: $bp-border-hover;
+    }
+
+    &.ueNodeSelected {
+        border-color: $bp-accent;
+        box-shadow:
+            0 0 0 1px $bp-accent,
+            0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* ── Node Header ─────────────────────────────────────── */
+
+.ueNodeHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    min-height: 32px;
+    position: relative;
+}
+
+.ueNodeIcon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85;
+}
+
+.ueNodeTitle {
+    flex: 1;
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ueNodeTitleInput {
+    flex: 1;
+    min-width: 0;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid transparent;
+    border-radius: $radius-sm;
+    outline: none;
+    cursor: text;
+
+    &:focus {
+        border-color: rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+}
+
+.ueNodeBadge {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.25);
+    padding: 1px 6px;
+    border-radius: $radius-sm;
+    flex-shrink: 0;
+}
+
+/* ── Section Node ────────────────────────────────────── */
+
+.ueSectionNode .ueNodeHeader {
+    background: $bp-accent;
+}
+
+.ueSectionBody {
+    padding: 8px 12px;
+    font-size: 11px;
+    color: $bp-text-dim;
+    border-top: 1px solid $bp-border;
+    background: $bp-surface-alt;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.ueSectionAddBtn {
+    padding: 3px 8px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 500;
+    color: $bp-text-dim;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid $bp-border;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: all 0.1s;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: $bp-text;
+    }
+}
+
+/* ── Item Node ───────────────────────────────────────── */
+
+.ueItemNode .ueNodeHeader {
+    border-radius: #{$radius} #{$radius} 0 0;
+}
+
+.typeDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 4px currentColor;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.ueItemBody {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 12px 10px;
+    border-top: 1px solid $bp-border;
+    background: $bp-surface-alt;
+    cursor: default;
+}
+
+/* ── Pins / Handles ──────────────────────────────────── */
+
+.pinExecOut {
+    width: 10px !important;
+    height: 10px !important;
+    min-width: 10px !important;
+    min-height: 10px !important;
+    background: $bp-accent !important;
+    border: 2px solid rgba(0, 0, 0, 0.3) !important;
+    border-radius: 50% !important;
+    right: -5px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    transition: filter 0.1s;
+
+    &:hover {
+        filter: brightness(1.2);
+    }
+}
+
+.pinExecIn {
+    width: 10px !important;
+    height: 10px !important;
+    min-width: 10px !important;
+    min-height: 10px !important;
+    background: $bp-accent !important;
+    border: 2px solid rgba(0, 0, 0, 0.3) !important;
+    border-radius: 50% !important;
+    left: -5px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    transition: filter 0.1s;
+
+    &:hover {
+        filter: brightness(1.2);
+    }
+}
+
+/* ── Inline Form Fields ──────────────────────────────── */
+
+.fieldRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fieldLabel {
+    font-size: 10px;
+    font-weight: 500;
+    color: $bp-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    width: 36px;
+    flex-shrink: 0;
+}
+
+.fieldLabelSm {
+    composes: fieldLabel;
+    width: 24px;
+}
+
+.fieldInput {
+    flex: 1;
+    min-width: 0;
+    padding: 4px 7px;
+    font-size: 11px;
+    font-family: inherit;
+    color: $bp-text;
+    background: $bp-bg;
+    border: 1px solid $bp-border;
+    border-radius: $radius-sm;
+    outline: none;
+    box-sizing: border-box;
+    cursor: text;
+
+    &:focus {
+        border-color: $bp-accent;
+    }
+
+    &::placeholder {
+        color: $bp-text-muted;
+    }
+}
+
+.fieldTextarea {
+    composes: fieldInput;
+    resize: vertical;
+    min-height: 36px;
+}
+
+.fieldInputNum {
+    width: 54px;
+    padding: 3px 5px;
+    font-size: 11px;
+    font-family: inherit;
+    color: $bp-text;
+    background: $bp-bg;
+    border: 1px solid $bp-border;
+    border-radius: $radius-sm;
+    outline: none;
+    cursor: text;
+
+    &:focus {
+        border-color: $bp-accent;
+    }
+}
+
+.fieldColorInput {
+    width: 28px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid $bp-border;
+    border-radius: $radius-sm;
+    background: none;
+    cursor: pointer;
+
+    &::-webkit-color-swatch-wrapper {
+        padding: 2px;
+    }
+
+    &::-webkit-color-swatch {
+        border: none;
+        border-radius: 2px;
+    }
+}
+
+.fieldCheck {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: $bp-text-dim;
+    cursor: pointer;
+
+    input {
+        cursor: pointer;
+        accent-color: $bp-accent;
+    }
+}
+
+.sliderFields {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.typeSelect {
+    min-width: 68px;
+    max-width: 100px;
+    flex-shrink: 0;
+    padding: 2px 8px !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-radius: $radius-sm !important;
+    outline: none !important;
+    gap: 0 !important;
+    width: auto !important;
+
+    & > div:first-child:not(:only-child) {
+        display: none !important;
+    }
+
+    & > div:last-child,
+    & > div:only-child {
+        pointer-events: auto;
+        grid-template-columns: 1fr auto;
+
+        span {
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            color: rgba(255, 255, 255, 0.95) !important;
+        }
+
+        svg {
+            width: 12px !important;
+            height: 12px !important;
+        }
+    }
+}
+
+/* ── Select Options Editor ───────────────────────────── */
+
+.selectOptsWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.selectOptRow {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.optRemoveBtn {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 14px;
+    font-family: inherit;
+    color: $bp-text-dim;
+    background: none;
+    border: 1px solid $bp-border;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    &:hover {
+        color: $bp-danger;
+        border-color: $bp-danger;
+    }
+}
+
+.optAddBtn {
+    padding: 3px 8px;
+    font-size: 10px;
+    font-family: inherit;
+    font-weight: 500;
+    color: $bp-text-dim;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid $bp-border;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    align-self: flex-start;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: $bp-text;
+    }
+}
+
+/* ── Context Menu ────────────────────────────────────── */
+
+.contextMenu {
+    position: fixed;
+    z-index: 1000;
+    min-width: 200px;
+    padding: 4px 0;
+    background: $bp-surface;
+    border: 1px solid $bp-border;
+    border-radius: $radius;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+}
+
+.contextMenuItem {
+    display: block;
+    width: 100%;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-family: inherit;
+    text-align: left;
+    color: $bp-text;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.08s;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.06);
+    }
+}
+
+.contextMenuDanger {
+    color: $bp-danger;
+
+    &:hover {
+        background: rgba(229, 85, 85, 0.1);
+    }
+}

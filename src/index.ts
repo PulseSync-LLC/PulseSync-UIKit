@@ -77,6 +77,10 @@ export type { SliderProps } from './components/Slider'
 export { Toggle } from './components/Toggle'
 export type { ToggleProps } from './components/Toggle'
 
+/* ── TitleText ── */
+export { TitleText } from './components/TitleText'
+export type { TitleTextProps } from './components/TitleText'
+
 /* ── Select ── */
 export { Select } from './components/Select'
 export type { SelectProps, SelectOption } from './components/Select'
@@ -100,6 +104,57 @@ export type { FilePickerProps } from './components/FilePicker'
 /* ── Accordion ── */
 export { Accordion } from './components/Accordion'
 export type { AccordionProps, AccordionItem } from './components/Accordion'
+
+/* ── Blueprints: Addon Settings (handleEvents-like) ── */
+export {
+    AddonSettingsAccordion,
+    AddonSettingsBlueprintEditor,
+    VisualBlueprintEditor,
+    BlueprintEditorProvider,
+    useBlueprintEditor,
+    BlueprintCanvas,
+    BlueprintGrid,
+    BlueprintEdges,
+    SectionNode,
+    ItemNode,
+    BlueprintContextMenu,
+    createEmptyBlueprint,
+    createEmptySection,
+    createEmptyItem,
+    schemaToBlueprintGraph,
+    blueprintGraphToSchema,
+    CANVAS_W,
+    CANVAS_H,
+    NODE_WIDTH,
+    SECTION_HEADER_H,
+    ITEM_NODE_H,
+    PORT_R,
+    TYPE_OPTIONS,
+} from './blueprints/addon-settings'
+export type {
+    AddonSettingsAccordionProps,
+    AddonSettingsBlueprintEditorProps,
+    VisualBlueprintEditorProps,
+    BlueprintEditorContextValue,
+    ContextMenuItem,
+    ConnectionDropPayload,
+    SectionNodeProps,
+    ItemNodeProps,
+    BlueprintContextMenuProps,
+    BlueprintGraph,
+    BlueprintNode,
+    BlueprintSectionNode,
+    BlueprintItemNode,
+    BlueprintNodeType,
+    AddonSettingsSchema,
+    AddonSettingsSection,
+    AddonSettingsItem,
+    AddonSettingsItemText,
+    AddonSettingsItemButton,
+    AddonSettingsItemSlider,
+    AddonSettingsButtonItem,
+    AddonSettingsValues,
+} from './blueprints/addon-settings'
 
 /* ── UserMenu ── */
 export { UserMenu } from './components/UserMenu'
