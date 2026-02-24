@@ -30,7 +30,6 @@ $psTextMuted: var(--ps-text-muted, var(--text-muted));
 
 .itemDimmed {
     opacity: 0.4;
-    transition: opacity 0.06s ease-out;
 }
 
 .itemHighlighted {
@@ -38,7 +37,6 @@ $psTextMuted: var(--ps-text-muted, var(--text-muted));
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--donut-accent, $psTextPrimary) 40%, transparent);
     z-index: 1;
     position: relative;
-    transition: box-shadow 0.06s ease-out, opacity 0.06s ease-out;
 }
 
 .empty {
@@ -120,6 +118,7 @@ $psTextMuted: var(--ps-text-muted, var(--text-muted));
     background: color-mix(in srgb, var(--donut-accent) 7%, $psSurfacePrimary);
     border-radius: 10px;
     padding: 8px 10px;
+    transition: opacity 0.28s ease-in-out, box-shadow 0.28s ease-in-out;
 }
 
 .donutDot {
@@ -180,6 +179,7 @@ $psTextMuted: var(--ps-text-muted, var(--text-muted));
     gap: 8px;
     align-items: center;
     border-radius: 8px;
+    transition: opacity 0.28s ease-in-out, box-shadow 0.28s ease-in-out;
 }
 
 .breakdownLabel {

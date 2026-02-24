@@ -13,6 +13,7 @@ $psTextMuted: var(--ps-text-muted, var(--text-muted));
     display: flex;
     flex-direction: column;
     gap: 12px;
+    transition: opacity 0.28s ease-in-out;
 }
 
 .panelDimmed {
