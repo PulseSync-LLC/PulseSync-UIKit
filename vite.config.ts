@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
-import { resolve } from 'path'
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
     plugins: [
@@ -18,15 +18,10 @@ export default defineConfig({
         modules: {
             localsConvention: 'camelCaseOnly',
         },
-        preprocessorOptions: {
-            scss: {
-                api: 'modern-compiler',
-            },
-        },
     },
     build: {
         lib: {
-            entry: resolve(__dirname, 'src/index.ts'),
+            entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
             name: 'PulseSyncUI',
             formats: ['es', 'cjs'],
             fileName: 'pulsesync-ui',
@@ -47,7 +42,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': resolve(__dirname, 'src'),
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
     },
 })
