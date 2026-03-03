@@ -43,5 +43,4 @@ next-env.d.ts
 pnpm-lock.yaml
 .idea
 schema.graphql
-yarn.lock
 package-lock.json
