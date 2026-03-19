@@ -61,6 +61,8 @@ export interface NavigationBarSlotProps {
 export interface NavigationBarProps {
     /** Navigation items */
     items: NavigationBarItem[]
+    /** Additional navigation items pinned to the bottom (desktop), but included in responsive/burger modes */
+    bottomItems?: NavigationBarItem[]
     /** Default color for active items (overridden by item.activeColor) */
     defaultActiveColor?: string
     /** Tooltip position relative to icons */
@@ -108,6 +110,7 @@ export interface NavigationBarProps {
 
 export function NavigationBar({
     items,
+    bottomItems,
     defaultActiveColor,
     tooltipPosition = 'right',
     topSlot,
@@ -138,11 +141,26 @@ export function NavigationBar({
 
     const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded
 
+    const uniqueByKey = (source: NavigationBarItem[]) => {
+        const seen = new Set<string>()
+        return source.filter(item => {
+            if (seen.has(item.key)) return false
+            seen.add(item.key)
+            return true
+        })
+    }
+
+    const normalizedItems = uniqueByKey(items)
+    const normalizedBottomItemsRaw = uniqueByKey(bottomItems ?? [])
+    const normalizedBottomItems = normalizedBottomItemsRaw.filter(item => !normalizedItems.some(main => main.key === item.key))
+    const hasBottomItems = normalizedBottomItems.length > 0
+    const allItems = hasBottomItems ? [...normalizedItems, ...normalizedBottomItems] : normalizedItems
+
     // In responsive mode: detect if nav items would overflow; if so, show burger menu
     useEffect(() => {
-        if (!responsive || !middleRef.current || items.length === 0) return
+        if (!responsive || !middleRef.current || allItems.length === 0) return
         const el = middleRef.current
-        const requiredWidth = items.length * RESPONSIVE_ITEM_WIDTH - RESPONSIVE_ITEM_GAP
+        const requiredWidth = allItems.length * RESPONSIVE_ITEM_WIDTH - RESPONSIVE_ITEM_GAP
         const check = () => {
             if (!el) return
             const available = el.clientWidth
@@ -152,7 +170,7 @@ export function NavigationBar({
         const ro = new ResizeObserver(check)
         ro.observe(el)
         return () => ro.disconnect()
-    }, [responsive, items.length])
+    }, [responsive, allItems.length])
 
     // Merge legacy props with new slot props
     const resolvedTopSlot: NavigationBarSlotProps = topSlot ?? {
@@ -298,9 +316,9 @@ export function NavigationBar({
         )
     }
 
-    const renderItems = () => (
+    const renderItems = (sourceItems: NavigationBarItem[]) => (
         <>
-            {items.map(item => {
+            {sourceItems.map(item => {
                 const labelText = item.label || item.tooltip || ''
                 const tooltipText = item.tooltip || item.label || ''
 
@@ -392,35 +410,42 @@ export function NavigationBar({
             <div className={styles.verticalContent}>
                 {renderSlot(resolvedTopSlot, 'top')}
                 <div className={styles.items}>
-                    {renderItems()}
+                    {renderItems(normalizedItems)}
                 </div>
+                {hasBottomItems && (
+                    <div className={styles.footerItems}>
+                        {renderItems(normalizedBottomItems)}
+                    </div>
+                )}
                 {renderSlot(resolvedBottomSlot, 'bottom')}
             </div>
 
-            {/* Horizontal mode: left/items/right in single row */}
-            <div className={styles.horizontalContent}>
-                {renderSlot(leftSlot, 'left')}
-                <div ref={middleRef} className={styles.middleWrap}>
-                    {responsive && overflowDetected ? (
-                        <button
-                            type="button"
-                            className={styles.burgerButton}
-                            onClick={() => setMenuOpen(o => !o)}
-                            aria-expanded={menuOpen}
-                            aria-label="Меню"
-                        >
-                            <span className={styles.iconWrap}>
-                                <BurgerIcon />
-                            </span>
-                        </button>
-                    ) : (
-                        <div className={styles.itemsHorizontal}>
-                            {renderItems()}
-                        </div>
-                    )}
+            {/* Horizontal mode: only when responsive — avoids duplicate items when responsive={false} */}
+            {responsive && (
+                <div className={styles.horizontalContent}>
+                    {renderSlot(leftSlot, 'left')}
+                    <div ref={middleRef} className={styles.middleWrap}>
+                        {overflowDetected ? (
+                            <button
+                                type="button"
+                                className={styles.burgerButton}
+                                onClick={() => setMenuOpen(o => !o)}
+                                aria-expanded={menuOpen}
+                                aria-label="Меню"
+                            >
+                                <span className={styles.iconWrap}>
+                                    <BurgerIcon />
+                                </span>
+                            </button>
+                        ) : (
+                            <div className={styles.itemsHorizontal}>
+                                {renderItems(allItems)}
+                            </div>
+                        )}
+                    </div>
+                    {renderSlot(rightSlot, 'right')}
                 </div>
-                {renderSlot(rightSlot, 'right')}
-            </div>
+            )}
 
             {/* Burger menu overlay — list of items when overflow in responsive mode */}
             {responsive && overflowDetected && menuOpen && typeof document !== 'undefined' &&
@@ -432,7 +457,7 @@ export function NavigationBar({
                             onClick={() => setMenuOpen(false)}
                         />
                         <div ref={menuRef} className={styles.menuPanel} role="dialog" aria-label="Навигация">
-                            {items.map(item => {
+                            {allItems.map(item => {
                                 const labelText = item.label || item.tooltip || ''
                                 const content = (
                                     <>

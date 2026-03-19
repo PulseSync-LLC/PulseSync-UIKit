@@ -46,6 +46,15 @@
     padding: 0 8px;
 }
 
+/* Bottom-pinned items (desktop) — same style as items, but not scrollable */
+.footerItems {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 8px 4px;
+    flex-shrink: 0;
+}
+
 /* Middle wrap — used in responsive mode for overflow detection */
 .middleWrap {
     flex: 1;
