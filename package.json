@@ -1,6 +1,6 @@
 {
-  "name": "@maks1mio/pulsesync-uikit",
-  "version": "1.1.4",
+  "name": "@pulsesync/uikit",
+  "version": "1.1.5",
   "description": "PulseSync UI Kit — shared component library for PulseSync apps",
   "type": "module",
   "main": "./dist/pulsesync-ui.cjs",
@@ -28,7 +28,6 @@
     "release:local": "node scripts/publish-local.mjs"
   },
   "peerDependencies": {
-    "@xyflow/react": ">=12.10.1",
     "framer-motion": ">=10.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
@@ -43,7 +42,8 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
-    "react-is": ">=16.0.0"
+    "react-is": ">=16.0.0",
+    "@xyflow/react": "^12.10.1"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",
