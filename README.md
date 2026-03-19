@@ -5,7 +5,7 @@
 ## Установка
 
 ```bash
-npm install @maks1mio/pulsesync-uikit
+npm install @pulsesync/uikit
 ```
 
 **Peer-зависимости:** `react`, `react-dom`, `framer-motion` (опционально).
@@ -13,8 +13,8 @@ npm install @maks1mio/pulsesync-uikit
 ## Использование
 
 ```tsx
-import { Button, Input, PulseSyncUIProvider } from '@maks1mio/pulsesync-uikit'
-import '@maks1mio/pulsesync-uikit/styles'
+import { Button, Input, PulseSyncUIProvider } from '@pulsesync/uikit'
+import '@pulsesync/uikit/styles'
 
 function App() {
   return (
@@ -59,19 +59,6 @@ function App() {
 ## Дизайн-токены
 
 Библиотека использует CSS-переменные из `tokens.css`. Их можно переопределить в своём приложении.
-
-## Публикация
-
-**Выпуск версии:**
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-```bash
-npm run release:local           # текущая версия из package.json
-npm run release:local -- 1.0.0  # указать версию
-```
 
 ## Лицензия
 
