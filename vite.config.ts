@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import react, { reactCompilerPreset } from '@vitejs/plugin-react'
+import babel from '@rolldown/plugin-babel'
 import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { fileURLToPath, URL } from 'node:url'
@@ -7,6 +8,9 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
     plugins: [
         react(),
+        babel({
+            presets: [reactCompilerPreset()],
+        }),
         libInjectCss(),
         dts({
             include: ['src'],
@@ -27,12 +31,13 @@ export default defineConfig({
             fileName: 'pulsesync-ui',
         },
         rollupOptions: {
-            external: ['react', 'react-dom', 'react/jsx-runtime', 'framer-motion', 'recharts', '@xyflow/react', '@xyflow/system'],
+            external: ['react', 'react-dom', 'react/jsx-runtime', 'react/compiler-runtime', 'framer-motion', 'recharts', '@xyflow/react', '@xyflow/system'],
             output: {
                 globals: {
                     react: 'React',
                     'react-dom': 'ReactDOM',
                     'react/jsx-runtime': 'jsxRuntime',
+                    'react/compiler-runtime': 'ReactCompilerRuntime',
                     'framer-motion': 'framerMotion',
                 },
             },

@@ -19,8 +19,10 @@ function BurgerIcon() {
 export interface NavigationBarItem {
     /** Unique key */
     key: string
+    /** Item type */
+    kind?: 'item' | 'group'
     /** Icon (small, ~20px recommended) */
-    icon: ReactNode
+    icon?: ReactNode
     /** Label text (shown when expanded) */
     label?: string
     /** Tooltip text on hover (defaults to label if not provided) */
@@ -155,12 +157,13 @@ export function NavigationBar({
     const normalizedBottomItems = normalizedBottomItemsRaw.filter(item => !normalizedItems.some(main => main.key === item.key))
     const hasBottomItems = normalizedBottomItems.length > 0
     const allItems = hasBottomItems ? [...normalizedItems, ...normalizedBottomItems] : normalizedItems
+    const compactItems = allItems.filter(item => item.kind !== 'group')
 
     // In responsive mode: detect if nav items would overflow; if so, show burger menu
     useEffect(() => {
-        if (!responsive || !middleRef.current || allItems.length === 0) return
+        if (!responsive || !middleRef.current || compactItems.length === 0) return
         const el = middleRef.current
-        const requiredWidth = allItems.length * RESPONSIVE_ITEM_WIDTH - RESPONSIVE_ITEM_GAP
+        const requiredWidth = compactItems.length * RESPONSIVE_ITEM_WIDTH - RESPONSIVE_ITEM_GAP
         const check = () => {
             if (!el) return
             const available = el.clientWidth
@@ -170,7 +173,7 @@ export function NavigationBar({
         const ro = new ResizeObserver(check)
         ro.observe(el)
         return () => ro.disconnect()
-    }, [responsive, allItems.length])
+    }, [responsive, compactItems.length])
 
     // Merge legacy props with new slot props
     const resolvedTopSlot: NavigationBarSlotProps = topSlot ?? {
@@ -316,9 +319,28 @@ export function NavigationBar({
         )
     }
 
-    const renderItems = (sourceItems: NavigationBarItem[]) => (
+    const renderItems = (sourceItems: NavigationBarItem[], mode: 'vertical' | 'horizontal' | 'menu' = 'vertical') => (
         <>
             {sourceItems.map(item => {
+                if (item.kind === 'group') {
+                    if (mode === 'horizontal') return null
+
+                    if (mode === 'menu') {
+                        return (
+                            <div key={item.key} className={styles.menuGroup}>
+                                {item.label}
+                            </div>
+                        )
+                    }
+
+                    return (
+                        <div key={item.key} className={styles.group}>
+                            <span className={styles.groupLabel}>{item.label}</span>
+                            <span className={styles.groupLine} />
+                        </div>
+                    )
+                }
+
                 const labelText = item.label || item.tooltip || ''
                 const tooltipText = item.tooltip || item.label || ''
 
@@ -439,7 +461,7 @@ export function NavigationBar({
                             </button>
                         ) : (
                             <div className={styles.itemsHorizontal}>
-                                {renderItems(allItems)}
+                                {renderItems(compactItems, 'horizontal')}
                             </div>
                         )}
                     </div>
@@ -458,6 +480,14 @@ export function NavigationBar({
                         />
                         <div ref={menuRef} className={styles.menuPanel} role="dialog" aria-label="Навигация">
                             {allItems.map(item => {
+                                if (item.kind === 'group') {
+                                    return (
+                                        <div key={item.key} className={styles.menuGroup}>
+                                            {item.label}
+                                        </div>
+                                    )
+                                }
+
                                 const labelText = item.label || item.tooltip || ''
                                 const content = (
                                     <>

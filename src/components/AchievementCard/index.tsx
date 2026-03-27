@@ -41,6 +41,8 @@ export interface AchievementCardProps {
     pointsSuffix?: string
     /** Additional class name */
     className?: string
+    /** Additional metadata rendered in footer next to difficulty */
+    footerMeta?: ReactNode
     /** Tooltip max height (px or string). Content scrolls when longer. */
     tooltipMaxHeight?: number | string
     /** Tooltip max width (px or string) */
@@ -116,6 +118,7 @@ export function AchievementCard({
     onClick,
     pointsSuffix = '',
     className,
+    footerMeta,
     tooltipMaxHeight = 280,
     tooltipMaxWidth = 500,
     tooltipMinWidth = 500,
@@ -208,6 +211,7 @@ export function AchievementCard({
                     )}
                     <div className={styles.footer}>
                         <span className={clsx(styles.difficultyBadge, difficultyClass)}>{diffNorm}</span>
+                        {footerMeta}
                         {variant === 'list' && (
                             <span className={styles.pointsBadgeList}>
                                 <StarIcon />
@@ -245,3 +249,4 @@ export function AchievementCard({
 
     return card
 }
+
