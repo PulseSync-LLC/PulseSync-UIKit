@@ -1,6 +1,6 @@
 {
   "name": "@pulsesync/uikit",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "PulseSync UI Kit — shared component library for PulseSync apps",
   "type": "module",
   "main": "./dist/pulsesync-ui.cjs",
@@ -41,25 +41,28 @@
     }
   },
   "dependencies": {
+    "@xyflow/react": "^12.10.2",
     "clsx": "^2.1.1",
-    "react-is": ">=16.0.0",
-    "@xyflow/react": "^12.10.1"
+    "react-is": ">=19.2.4"
   },
   "devDependencies": {
-    "@types/node": "^25.3.0",
+    "@babel/core": "^7.29.0",
+    "@rolldown/plugin-babel": "^0.2.2",
+    "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react-swc": "^4.2.3",
-    "@xyflow/react": "^12.10.1",
-    "framer-motion": "^12.33.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@xyflow/react": "^12.10.2",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "framer-motion": "^12.38.0",
     "glob": "^13.0.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-easy-crop": "^5.5.6",
-    "recharts": "^3.7.0",
-    "sass": "^1.97.3",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1",
+    "react-easy-crop": "^5.5.7",
+    "recharts": "^3.8.1",
+    "sass": "^1.98.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-lib-inject-css": "^2.2.2"
   },
