@@ -68,13 +68,6 @@ function App() {
 | **Tooltip** | Всплывающая подсказка |
 | **ViewToggle** | Переключатель вида |
 
-## Breaking changes in `2.0.0`
-
-- Удалены `AchievementCard`, `AreaChartCard`, `BreakdownCard`, `KpiGrid`, `AddonSettings`.
-- Удалены `NavLink`, `NavigationBar`, `UserCard`, `UserCardTile`, `UserMention`, `UserMenu`, `ImageCropModal`.
-- Удалён `PulseSyncUIProvider`. Компоненты больше не зависят от app-level router adapter.
-- Рекомендуемый импорт теперь идёт через subpath entrypoints вместо корневого barrel.
-
 ## Дизайн-токены
 
 Библиотека использует CSS-переменные из `tokens.css`. Их можно переопределить в своём приложении.
