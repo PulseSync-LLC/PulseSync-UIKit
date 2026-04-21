@@ -5,6 +5,16 @@ import dts from 'vite-plugin-dts'
 import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { fileURLToPath, URL } from 'node:url'
 
+const entrypoints = {
+    index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+    actions: fileURLToPath(new URL('./src/actions.ts', import.meta.url)),
+    layout: fileURLToPath(new URL('./src/layout.ts', import.meta.url)),
+    navigation: fileURLToPath(new URL('./src/navigation.ts', import.meta.url)),
+    inputs: fileURLToPath(new URL('./src/inputs.ts', import.meta.url)),
+    feedback: fileURLToPath(new URL('./src/feedback.ts', import.meta.url)),
+    'data-display': fileURLToPath(new URL('./src/data-display.ts', import.meta.url)),
+} as const
+
 export default defineConfig({
     plugins: [
         react(),
@@ -15,7 +25,7 @@ export default defineConfig({
         dts({
             include: ['src'],
             outDir: 'dist',
-            rollupTypes: true,
+            rollupTypes: false,
         }),
     ],
     css: {
@@ -25,10 +35,12 @@ export default defineConfig({
     },
     build: {
         lib: {
-            entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
-            name: 'PulseSyncUI',
+            entry: entrypoints,
             formats: ['es', 'cjs'],
-            fileName: 'pulsesync-ui',
+            fileName: (format, entryName) => {
+                const extension = format === 'es' ? 'js' : 'cjs'
+                return entryName === 'index' ? `index.${extension}` : `${entryName}.${extension}`
+            },
         },
         rollupOptions: {
             external: ['react', 'react-dom', 'react/jsx-runtime', 'react/compiler-runtime', 'framer-motion', 'recharts', '@xyflow/react', '@xyflow/system'],

@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react'
-import { usePulseSyncUI } from '@/context/PulseSyncUIProvider'
 import styles from './button.module.scss'
 import clsx from 'clsx'
 
@@ -32,8 +31,6 @@ type ButtonAsLink = BaseProps &
 export type ButtonProps = ButtonAsButton | ButtonAsLink
 
 export function Button(props: ButtonProps) {
-    const { LinkComponent } = usePulseSyncUI()
-
     const {
         variant = 'primary',
         size = 'md',
@@ -83,15 +80,6 @@ export function Button(props: ButtonProps) {
                 >
                     {content}
                 </a>
-            )
-        }
-
-        // Use framework-specific Link if provided via PulseSyncUIProvider
-        if (LinkComponent) {
-            return (
-                <LinkComponent href={href} className={classes} aria-disabled={disabled} {...linkRest}>
-                    {content}
-                </LinkComponent>
             )
         }
 
